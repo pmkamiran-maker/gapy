@@ -1,4 +1,4 @@
-import { LANGUAGES, useShopLocale } from "@/lib/shop-locale";
+import { useShopLocale } from "@/lib/shop-locale";
 import { useRef, useState } from "react";
 import {
   ChevronDown,
@@ -10,6 +10,7 @@ import {
   Search,
   ShoppingBag,
   Truck,
+  UserRound,
   Wrench,
   X,
 } from "lucide-react";
@@ -37,6 +38,7 @@ import { discountPercent, stockLabel } from "@/lib/pricing";
 import { useShop } from "@/lib/shop-store";
 import { DELIVERY_PRICE, FREE_DELIVERY_FROM, STORE } from "@/lib/store-config";
 
+import { LanguagePicker } from "./language-picker";
 import { ProductDetails, ShopPanel, type Panel } from "./shop-dialogs";
 
 const SERVICES = [
@@ -138,7 +140,7 @@ function ProductCard({
 
 export function Storefront() {
   const { cartCount, favorites, compare } = useShop();
-  const { locale, selectLocale, t, price, productText } = useShopLocale();
+  const { t, price, productText } = useShopLocale();
   const [category, setCategory] = useState<CatalogSlug>("all");
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState<SortKey>("popular");
@@ -214,25 +216,11 @@ export function Storefront() {
             {STORE.hours && (
               <span className="shop-hours">{t(STORE.hours)}</span>
             )}
-            <label className="shop-language">
-              <span className="sr-only">{t("Язык")}</span>
-              <select
-                value={locale}
-                onChange={(event) => {
-                  const language = LANGUAGES.find(
-                    (option) => option.locale === event.target.value,
-                  );
-                  if (language) selectLocale(language.locale);
-                }}
-              >
-                {LANGUAGES.map(({ locale: code, label, name }) => (
-                  <option key={code} value={code} lang={code} aria-label={name}>
-                    {label}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown size={14} aria-hidden="true" />
-            </label>
+            <a className="shop-login-link" href="/login">
+              <UserRound size={17} aria-hidden="true" />
+              {t("Аккаунт")}
+            </a>
+            <LanguagePicker />
           </div>
         </div>
       </div>

@@ -255,4 +255,43 @@ export const shopMessages: Readonly<
     "Synag tertibi. Mysal üçin at, telefon belgisini we salgyny giriziň.",
     "Test mode. Enter a fictional name, phone number, and address.",
   ],
+  Аккаунт: ["Hasap", "Account"],
+  "Вход в аккаунт": ["Hasaba gir", "Sign in"],
+  "Ваш аккаунт": ["Hasabyňyz", "Your account"],
+  "Вы вошли в аккаунт.": ["Hasabyňyza girdiňiz.", "You’re signed in."],
+  "Вход пока не настроен.": [
+    "Hasaba giriş entek sazlanmady.",
+    "Sign-in hasn’t been configured yet.",
+  ],
+  "Проверяем подключение…": ["Birikme barlanýar…", "Checking connection…"],
+  "Вход временно недоступен. Обновите страницу и попробуйте снова.": [
+    "Hasaba girmek wagtlaýyn elýeterli däl. Sahypany täzeläp, gaýtadan synanyşyň.",
+    "Sign-in is temporarily unavailable. Refresh the page and try again.",
+  ],
+  "Электронная почта": ["Elektron poçta", "Email"],
+  Пароль: ["Açar söz", "Password"],
+  Войти: ["Gir", "Sign in"],
+  Выйти: ["Çyk", "Sign out"],
+  "Выполняем вход…": ["Hasaba girilýär…", "Signing in…"],
+  "Выполняем выход…": ["Hasapdan çykylýar…", "Signing out…"],
+  "Проверьте электронную почту и пароль.": [
+    "Elektron poçta salgyňyzy we açar sözüňizi barlaň.",
+    "Check your email address and password.",
+  ],
+  "Подтвердите электронную почту и повторите вход.": [
+    "Elektron poçta salgyňyzy tassyklaň we täzeden girmäge synanyşyň.",
+    "Confirm your email address and try signing in again.",
+  ],
+  "Слишком много попыток. Попробуйте позже.": [
+    "Synanyşyklar aşa köp. Soňrak gaýtadan synanyşyň.",
+    "Too many attempts. Try again later.",
+  ],
+  "Не удалось войти. Попробуйте ещё раз.": [
+    "Hasaba girip bolmady. Gaýtadan synanyşyň.",
+    "Could not sign in. Try again.",
+  ],
+  "Не удалось выйти. Попробуйте ещё раз.": [
+    "Hasapdan çykyp bolmady. Gaýtadan synanyşyň.",
+    "Could not sign out. Try again.",
+  ],
 };
