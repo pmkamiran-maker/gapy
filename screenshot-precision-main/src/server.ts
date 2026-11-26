@@ -2,6 +2,8 @@ import "./lib/error-capture";
 
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
+import { handleOrderRequest } from "./lib/order-request-server";
+import { publicSupabaseConfig, SUPABASE_CONFIG_PATH } from "./lib/supabase-config";
 
 type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
@@ -50,6 +52,19 @@ function isH3SwallowedErrorBody(body: string): boolean {
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
+      const runtime = (request as Request & {
+        runtime?: { cloudflare?: { env?: unknown } };
+      }).runtime?.cloudflare?.env ?? env ?? (typeof process !== "undefined" ? process.env : {});
+      if (new URL(request.url).pathname === SUPABASE_CONFIG_PATH) {
+        const headers = { "Cache-Control": "no-store" };
+        if (request.method !== "GET") return new Response(null, { status: 405, headers: { ...headers, Allow: "GET" } });
+        const config = runtime as { SUPABASE_URL?: string; SUPABASE_PUBLISHABLE_KEY?: string };
+        return Response.json(publicSupabaseConfig(config.SUPABASE_URL, config.SUPABASE_PUBLISHABLE_KEY), { headers });
+      }
+
+      const orderResponse = await handleOrderRequest(request, runtime as Parameters<typeof handleOrderRequest>[1]);
+      if (orderResponse) return orderResponse;
+
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
       return await normalizeCatastrophicSsrResponse(response);

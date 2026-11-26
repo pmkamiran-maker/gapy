@@ -1,4 +1,4 @@
-import { DELIVERY_PRICE, FREE_DELIVERY_FROM, STORE } from "@/lib/store-config";
+import { DELIVERY_PRICE, FREE_DELIVERY_FROM } from "@/lib/store-config";
 import { formatPrice } from "@/lib/pricing";
 
 export type InfoSlug =
@@ -56,7 +56,7 @@ export const INFO_PAGES: Record<InfoSlug, InfoPage> = {
   kontakty: {
     eyebrow: "Контакты",
     title: "Контакты",
-    intro: `Приезжайте в шоурум — ${STORE.hours.toLowerCase()}. Можно потрогать покрытия, подобрать фурнитуру и оформить замер.`,
+    intro: "Адрес и режим работы шоурума будут опубликованы после подтверждения.",
     sections: [],
     extra: "contacts",
   },
