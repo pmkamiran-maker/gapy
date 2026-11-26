@@ -9,6 +9,7 @@ const key = "sb_publishable_test";
 const mock = vi.hoisted(() => ({
   createClient: vi.fn(),
   signInWithPassword: vi.fn(),
+  signUp: vi.fn(),
   signOut: vi.fn(),
   unsubscribe: vi.fn(),
 }));
@@ -97,5 +98,55 @@ describe("Login", () => {
     expect(mock.signOut).toHaveBeenCalledWith({ scope: "local" });
     unmount();
     expect(mock.unsubscribe).toHaveBeenCalled();
+  });
+
+  it("checks the password confirmation and requests email verification through Supabase", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValue(
+          Response.json({ url: "https://signup.supabase.co", key }),
+        ),
+    );
+    mock.createClient.mockReturnValue({
+      auth: {
+        onAuthStateChange: (
+          callback: (event: string, session: null) => void,
+        ) => {
+          callback("INITIAL_SESSION", null);
+          return { data: { subscription: { unsubscribe: mock.unsubscribe } } };
+        },
+        signUp: mock.signUp,
+      },
+    });
+    mock.signUp.mockResolvedValue({ data: { session: null }, error: null });
+
+    render(<LoginPage registration />);
+    expect(
+      screen.getByRole("link", { name: "Уже есть аккаунт? Войти" }),
+    ).toHaveAttribute("href", "/login");
+    const email = screen.getByLabelText("Электронная почта");
+    await vi.waitFor(() => expect(email).toBeEnabled());
+    fireEvent.change(email, { target: { value: "customer@example.com" } });
+    fireEvent.change(screen.getByLabelText("Пароль", { exact: true }), {
+      target: { value: "test-password" },
+    });
+    const confirmation = screen.getByLabelText("Повторите пароль");
+    fireEvent.change(confirmation, { target: { value: "other-password" } });
+    fireEvent.click(screen.getByRole("button", { name: "Создать аккаунт" }));
+    expect(screen.getByRole("alert")).toHaveTextContent("Пароли не совпадают.");
+    expect(mock.signUp).not.toHaveBeenCalled();
+
+    fireEvent.change(confirmation, { target: { value: "test-password" } });
+    fireEvent.click(screen.getByRole("button", { name: "Создать аккаунт" }));
+    expect(await screen.findByText(/Проверьте почту/)).toBeInTheDocument();
+    expect(mock.signUp).toHaveBeenCalledWith({
+      email: "customer@example.com",
+      password: "test-password",
+      options: {
+        emailRedirectTo: new URL("/login", window.location.origin).href,
+      },
+    });
   });
 });

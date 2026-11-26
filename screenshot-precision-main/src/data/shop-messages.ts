@@ -294,4 +294,41 @@ export const shopMessages: Readonly<
     "Hasapdan çykyp bolmady. Gaýtadan synanyşyň.",
     "Could not sign out. Try again.",
   ],
+  Регистрация: ["Hasaba ýazylmak", "Register"],
+  "Регистрация пока не настроена.": [
+    "Hasaba ýazylmak entek sazlanmady.",
+    "Registration hasn’t been configured yet.",
+  ],
+  "Регистрация сейчас недоступна.": [
+    "Hasaba ýazylmak häzir elýeterli däl.",
+    "Registration is currently unavailable.",
+  ],
+  "Повторите пароль": ["Açar sözüni gaýtalaň", "Confirm password"],
+  "Пароли не совпадают.": [
+    "Açar sözleri gabat gelenok.",
+    "Passwords don’t match.",
+  ],
+  "Выберите более надёжный пароль.": [
+    "Has ygtybarly açar sözüni saýlaň.",
+    "Choose a stronger password.",
+  ],
+  "Не удалось завершить регистрацию. Попробуйте ещё раз.": [
+    "Hasaba ýazylyp bolmady. Gaýtadan synanyşyň.",
+    "Registration could not be completed. Try again.",
+  ],
+  "Создаём аккаунт…": ["Hasap döredilýär…", "Creating account…"],
+  "Создать аккаунт": ["Hasap döret", "Create account"],
+  "Нет аккаунта? Зарегистрироваться": [
+    "Hasabyňyz ýokmy? Hasaba ýazylyň",
+    "No account? Register",
+  ],
+  "Уже есть аккаунт? Войти": [
+    "Hasabyňyz barmy? Giriň",
+    "Already have an account? Sign in",
+  ],
+  "Проверьте почту. Если пришло письмо от Supabase, подтвердите адрес по ссылке и войдите.":
+    [
+      "Elektron poçtaňyzy barlaň. Supabase-den hat gelen bolsa, baglanyşyk arkaly salgyňyzy tassyklaň we hasabyňyza giriň.",
+      "Check your inbox. If you received a Supabase email, follow the link to confirm your address, then sign in.",
+    ],
 };
