@@ -1,3 +1,4 @@
+import { ShopLocaleProvider, useShopLocale } from "@/lib/shop-locale";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
@@ -14,22 +15,23 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
+  const { t } = useShopLocale();
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-7xl font-bold text-foreground">404</h1>
         <h2 className="mt-4 text-xl font-semibold text-foreground">
-          Страница не найдена
+          {t("Страница не найдена")}
         </h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          Возможно, адрес изменился или страница была удалена.
+          {t("Возможно, адрес изменился или страница была удалена.")}
         </p>
         <div className="mt-6">
           <Link
             to="/"
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            На главную
+            {t("На главную")}
           </Link>
         </div>
       </div>
@@ -38,6 +40,7 @@ function NotFoundComponent() {
 }
 
 function ErrorComponent({ error, reset }: ErrorComponentProps) {
+  const { t } = useShopLocale();
   console.error(error);
   const router = useRouter();
   useEffect(() => {
@@ -48,10 +51,10 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          Не удалось загрузить страницу
+          {t("Не удалось загрузить страницу")}
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Попробуйте обновить страницу или вернуться на главную.
+          {t("Попробуйте обновить страницу или вернуться на главную.")}
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
@@ -61,13 +64,13 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
             }}
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Повторить
+            {t("Повторить")}
           </button>
           <a
             href="/"
             className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
           >
-            На главную
+            {t("На главную")}
           </a>
         </div>
       </div>
@@ -115,7 +118,7 @@ function RootShell({ children }: { children: ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        {children}
+        <ShopLocaleProvider>{children}</ShopLocaleProvider>
         <Scripts />
       </body>
     </html>

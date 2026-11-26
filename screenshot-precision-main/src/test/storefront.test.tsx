@@ -2,13 +2,16 @@ import { fireEvent, render, screen, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it } from "vitest";
 
 import { Storefront } from "@/components/shop/storefront";
+import { ShopLocaleProvider } from "@/lib/shop-locale";
 import { ShopProvider } from "@/lib/shop-store";
 
 function renderStorefront() {
   return render(
-    <ShopProvider>
-      <Storefront />
-    </ShopProvider>,
+    <ShopLocaleProvider>
+      <ShopProvider>
+        <Storefront />
+      </ShopProvider>
+    </ShopLocaleProvider>,
   );
 }
 
@@ -82,5 +85,53 @@ describe("Storefront", () => {
     expect(
       within(compare).getByRole("rowheader", { name: "Материал" }),
     ).toBeInTheDocument();
+  });
+
+  it("switches all three languages and keeps the same cart variant", () => {
+    const { unmount } = renderStorefront();
+    fireEvent.change(screen.getByRole("combobox", { name: "Язык" }), {
+      target: { value: "en" },
+    });
+    expect(document.documentElement.lang).toBe("en");
+
+    fireEvent.change(screen.getByRole("searchbox"), {
+      target: { value: "white enamel" },
+    });
+    expect(screen.getByRole("status")).toHaveTextContent("Products found: 1");
+    fireEvent.click(
+      screen.getByRole("button", { name: "Fjord 01 white enamel" }),
+    );
+    const product = screen.getByRole("dialog", {
+      name: "Fjord 01 white enamel",
+    });
+    fireEvent.click(within(product).getByRole("radio", { name: "Cream" }));
+    fireEvent.click(
+      within(product).getByRole("button", { name: "Add to cart" }),
+    );
+
+    fireEvent.change(screen.getByRole("combobox", { name: "Language" }), {
+      target: { value: "tk" },
+    });
+    expect(document.documentElement.lang).toBe("tk");
+    expect(
+      screen.getByRole("heading", { name: "Öýüňiz üçin gapylar" }),
+    ).toBeInTheDocument();
+    unmount();
+
+    renderStorefront();
+    expect(screen.getByRole("combobox", { name: "Til" })).toHaveValue("tk");
+    fireEvent.click(screen.getByRole("button", { name: "Sebet" }));
+    const cart = screen.getByRole("dialog", { name: "Sebet" });
+    expect(cart).toHaveTextContent("Fjord 01 ak emal");
+    expect(cart).toHaveTextContent("Krem reňk");
+    fireEvent.click(within(cart).getByRole("button", { name: "Ýap" }));
+    fireEvent.change(screen.getByRole("combobox", { name: "Til" }), {
+      target: { value: "ru" },
+    });
+    expect(document.documentElement.lang).toBe("ru");
+    fireEvent.click(screen.getByRole("button", { name: "Корзина" }));
+    expect(screen.getByRole("dialog", { name: "Корзина" })).toHaveTextContent(
+      "Кремовый",
+    );
   });
 });

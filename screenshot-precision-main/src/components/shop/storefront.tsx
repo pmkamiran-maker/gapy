@@ -1,3 +1,4 @@
+import { LANGUAGES, useShopLocale } from "@/lib/shop-locale";
 import { useRef, useState } from "react";
 import {
   ChevronDown,
@@ -27,11 +28,12 @@ import {
 import {
   SORT_OPTIONS,
   filterProducts,
+  matchesQuery,
   paginate,
   sortProducts,
   type SortKey,
 } from "@/lib/catalog-search";
-import { discountPercent, formatPrice, stockLabel } from "@/lib/pricing";
+import { discountPercent, stockLabel } from "@/lib/pricing";
 import { useShop } from "@/lib/shop-store";
 import { FREE_DELIVERY_FROM, STORE } from "@/lib/store-config";
 
@@ -41,7 +43,7 @@ const SERVICES = [
   {
     icon: Truck,
     title: "Доставка",
-    detail: `Бесплатно от ${formatPrice(FREE_DELIVERY_FROM)}`,
+    detail: "Бесплатно от {price}",
   },
   {
     icon: Ruler,
@@ -56,16 +58,17 @@ const SERVICES = [
 ];
 
 function Brand() {
+  const { t } = useShopLocale();
   return (
     <a
       href="#top"
       className="shop-brand"
-      aria-label="Портал, в начало страницы"
+      aria-label={t("Портал, в начало страницы")}
     >
       <DoorClosed aria-hidden="true" size={30} strokeWidth={1.4} />
       <span>
-        {STORE.name}
-        <small>{STORE.tagline}</small>
+        {t(STORE.name)}
+        <small>{t(STORE.tagline)}</small>
       </span>
     </a>
   );
@@ -79,6 +82,8 @@ function ProductCard({
   onOpen: () => void;
 }) {
   const { isFavorite, toggleFavorite } = useShop();
+  const { t, price, productText } = useShopLocale();
+  const { name } = productText(product);
   const favorite = isFavorite(product.id);
   const discount = discountPercent(product.price, product.oldPrice);
   const badge = product.badges[0];
@@ -90,19 +95,19 @@ function ProductCard({
           type="button"
           className="shop-card-image"
           onClick={onOpen}
-          aria-label={`Подробнее: ${product.name}`}
+          aria-label={t("Подробнее: {name}", { name })}
         >
           <img src={product.image} alt="" loading="lazy" />
         </button>
         {discount > 0 ? (
           <span className="shop-badge shop-badge-sale">−{discount}%</span>
         ) : (
-          badge && <span className="shop-badge">{BADGE_LABELS[badge]}</span>
+          badge && <span className="shop-badge">{t(BADGE_LABELS[badge])}</span>
         )}
         <button
           type="button"
           className="shop-icon shop-save"
-          aria-label={`Избранное: ${product.name}`}
+          aria-label={t("Избранное: {name}", { name })}
           aria-pressed={favorite}
           onClick={() => toggleFavorite(product.id)}
         >
@@ -114,20 +119,20 @@ function ProductCard({
         </button>
       </div>
       <div className="shop-card-body">
-        <p className="shop-card-brand">{brandName(product.brand)}</p>
+        <p className="shop-card-brand">{t(brandName(product.brand))}</p>
         <h3>
           <button type="button" onClick={onOpen}>
-            {product.name}
+            {name}
           </button>
         </h3>
         <p className="shop-price">
-          <strong>{formatPrice(product.price)}</strong>
+          <strong>{price(product.price)}</strong>
           {discount > 0 && product.oldPrice && (
-            <del>{formatPrice(product.oldPrice)}</del>
+            <del>{price(product.oldPrice)}</del>
           )}
         </p>
         <span className="shop-stock" data-stock={product.stock}>
-          {stockLabel(product.stock)}
+          {t(stockLabel(product.stock))}
         </span>
       </div>
     </article>
@@ -136,6 +141,7 @@ function ProductCard({
 
 export function Storefront() {
   const { cartCount, favorites, compare } = useShop();
+  const { locale, selectLocale, t, price, productText } = useShopLocale();
   const [category, setCategory] = useState<CatalogSlug>("all");
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState<SortKey>("popular");
@@ -147,10 +153,20 @@ export function Storefront() {
   const catalogRef = useRef<HTMLHeadingElement>(null);
   const previousFocus = useRef<HTMLElement | null>(null);
   const switchingDialog = useRef(false);
-  const filtered = sortProducts(
-    filterProducts(PRODUCTS, category, { q: query.trim(), stock }),
-    sort,
-  );
+  const needle = query.trim().toLowerCase();
+  const available = filterProducts(PRODUCTS, category, { stock });
+  const results = needle
+    ? available.filter((item) => {
+        const { name, description } = productText(item);
+        return (
+          matchesQuery(item, needle) ||
+          [name, description, t(item.collection)].some((value) =>
+            value.toLowerCase().includes(needle),
+          )
+        );
+      })
+    : available;
+  const filtered = sortProducts(results, sort);
   const { items, current, pages } = paginate(filtered, page);
 
   function selectCategory(value: CatalogSlug) {
@@ -190,39 +206,60 @@ export function Storefront() {
   return (
     <div className="shop" id="top">
       <a className="shop-skip" href="#catalog">
-        Перейти к каталогу
+        {t("Перейти к каталогу")}
       </a>
       <div className="shop-top">
         <div className="shop-wrap">
           <span>
-            <MapPin size={15} aria-hidden="true" /> Ашхабад
+            <MapPin size={15} aria-hidden="true" /> {t("Ашхабад")}
           </span>
-          <span>{STORE.hours}</span>
+          <div className="shop-top-settings">
+            <span className="shop-hours">{t(STORE.hours)}</span>
+            <label className="shop-language">
+              <span className="sr-only">{t("Язык")}</span>
+              <select
+                value={locale}
+                onChange={(event) => {
+                  const language = LANGUAGES.find(
+                    (option) => option.locale === event.target.value,
+                  );
+                  if (language) selectLocale(language.locale);
+                }}
+              >
+                {LANGUAGES.map(({ locale: code, label, name }) => (
+                  <option key={code} value={code} lang={code} aria-label={name}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown size={14} aria-hidden="true" />
+            </label>
+          </div>
         </div>
       </div>
       <header className="shop-header">
         <div className="shop-wrap shop-header-row">
           <Brand />
-          <nav className="shop-nav" aria-label="Основное меню">
+          <nav className="shop-nav" aria-label={t("Основное меню")}>
             <a href="#catalog" onClick={() => selectCategory("all")}>
-              Каталог
+              {t("Каталог")}
             </a>
             <a href="#catalog" onClick={() => selectCategory("interior")}>
-              Межкомнатные
+              {t("Межкомнатные")}
             </a>
             <a href="#catalog" onClick={() => selectCategory("entrance")}>
-              Входные
+              {t("Входные")}
             </a>
             <a href="#catalog" onClick={() => selectCategory("hardware")}>
-              Фурнитура
+              {t("Фурнитура")}
             </a>
-            <a href="#services">Услуги</a>
+            <a href="#services">{t("Услуги")}</a>
           </nav>
           <div className="shop-header-actions">
             <button
               type="button"
               className="shop-icon"
-              aria-label="Поиск по каталогу"
+              aria-label={t("Поиск по каталогу")}
               onClick={() => searchRef.current?.focus()}
             >
               <Search size={21} aria-hidden="true" />
@@ -230,7 +267,7 @@ export function Storefront() {
             <button
               type="button"
               className="shop-icon"
-              aria-label="Избранное"
+              aria-label={t("Избранное")}
               onClick={() => openPanel("favorites")}
             >
               <Heart size={21} aria-hidden="true" />
@@ -241,7 +278,7 @@ export function Storefront() {
             <button
               type="button"
               className="shop-icon"
-              aria-label="Сравнение"
+              aria-label={t("Сравнение")}
               onClick={() => openPanel("compare")}
             >
               <Scale size={21} aria-hidden="true" />
@@ -252,7 +289,7 @@ export function Storefront() {
             <button
               type="button"
               className="shop-icon shop-header-cart"
-              aria-label="Корзина"
+              aria-label={t("Корзина")}
               onClick={() => openPanel("cart")}
             >
               <ShoppingBag size={20} aria-hidden="true" />
@@ -265,24 +302,21 @@ export function Storefront() {
         <section className="shop-hero shop-wrap" aria-labelledby="hero-title">
           <div className="shop-hero-inner">
             <div className="shop-hero-copy">
-              <p className="shop-kicker">Двери и фурнитура в Ашхабаде</p>
-              <h1 id="hero-title">
-                Двери для
-                <br />
-                вашего дома
-              </h1>
+              <p className="shop-kicker">{t("Двери и фурнитура в Ашхабаде")}</p>
+              <h1 id="hero-title">{t("Двери для вашего дома")}</h1>
               <p className="shop-hero-text">
-                Подберите межкомнатные и входные двери, ручки и комплектующие
-                для вашего интерьера.
+                {t(
+                  "Подберите межкомнатные и входные двери, ручки и комплектующие для вашего интерьера.",
+                )}
               </p>
               <a className="shop-button" href="#catalog">
-                Смотреть каталог
+                {t("Смотреть каталог")}
               </a>
             </div>
             <img
               className="shop-hero-image"
               src={showroom}
-              alt="Деревянные раздвижные двери в светлой гостиной"
+              alt={t("Деревянные раздвижные двери в светлой гостиной")}
               fetchPriority="high"
             />
           </div>
@@ -290,14 +324,14 @@ export function Storefront() {
         <section
           id="services"
           className="shop-services shop-wrap"
-          aria-label="Услуги магазина"
+          aria-label={t("Услуги магазина")}
         >
           {SERVICES.map(({ icon: Icon, title, detail }) => (
             <div key={title} className="shop-service">
               <Icon size={26} strokeWidth={1.5} aria-hidden="true" />
               <div>
-                <strong>{title}</strong>
-                <p>{detail}</p>
+                <strong>{t(title)}</strong>
+                <p>{t(detail, { price: price(FREE_DELIVERY_FROM) })}</p>
               </div>
             </div>
           ))}
@@ -305,15 +339,15 @@ export function Storefront() {
         <section className="shop-catalog shop-wrap" aria-labelledby="catalog">
           <div className="shop-catalog-heading">
             <h2 id="catalog" tabIndex={-1} ref={catalogRef}>
-              Каталог
+              {t("Каталог")}
             </h2>
             <div className="shop-search">
               <Search size={20} aria-hidden="true" />
               <input
                 ref={searchRef}
                 type="search"
-                aria-label="Поиск по каталогу"
-                placeholder="Название или коллекция"
+                aria-label={t("Поиск по каталогу")}
+                placeholder={t("Название или коллекция")}
                 value={query}
                 onChange={(event) => {
                   setQuery(event.target.value);
@@ -324,7 +358,7 @@ export function Storefront() {
                 <button
                   type="button"
                   className="shop-icon"
-                  aria-label="Очистить поиск"
+                  aria-label={t("Очистить поиск")}
                   onClick={() => {
                     setQuery("");
                     setPage(1);
@@ -338,7 +372,7 @@ export function Storefront() {
           </div>
           <div
             className="shop-categories"
-            aria-label="Категории каталога"
+            aria-label={t("Категории каталога")}
             role="group"
           >
             {CATALOG_SLUGS.map((slug) => (
@@ -348,12 +382,14 @@ export function Storefront() {
                 aria-pressed={category === slug}
                 onClick={() => selectCategory(slug)}
               >
-                {CATALOG_TITLES[slug]}
+                {t(CATALOG_TITLES[slug])}
               </button>
             ))}
           </div>
           <div className="shop-toolbar">
-            <p role="status">Найдено товаров: {filtered.length}</p>
+            <p role="status">
+              {t("Найдено товаров: {count}", { count: filtered.length })}
+            </p>
             <div className="shop-filters">
               <label className="shop-stock-filter">
                 <input
@@ -364,10 +400,10 @@ export function Storefront() {
                     setPage(1);
                   }}
                 />
-                В наличии
+                {t("В наличии")}
               </label>
               <label className="shop-sort">
-                <span className="sr-only">Сортировка</span>
+                <span className="sr-only">{t("Сортировка")}</span>
                 <select
                   value={sort}
                   onChange={(event) => {
@@ -377,7 +413,7 @@ export function Storefront() {
                 >
                   {SORT_OPTIONS.map(({ key, label }) => (
                     <option key={key} value={key}>
-                      {label}
+                      {t(label)}
                     </option>
                   ))}
                 </select>
@@ -397,8 +433,8 @@ export function Storefront() {
             </div>
           ) : (
             <div className="shop-empty">
-              <h3>Товары не найдены</h3>
-              <p>Попробуйте изменить запрос или сбросить фильтры.</p>
+              <h3>{t("Товары не найдены")}</h3>
+              <p>{t("Попробуйте изменить запрос или сбросить фильтры.")}</p>
               <button
                 type="button"
                 className="shop-button"
@@ -408,18 +444,21 @@ export function Storefront() {
                   setStock(false);
                 }}
               >
-                Сбросить фильтры
+                {t("Сбросить фильтры")}
               </button>
             </div>
           )}
           {pages > 1 && (
-            <nav className="shop-pagination" aria-label="Страницы каталога">
+            <nav
+              className="shop-pagination"
+              aria-label={t("Страницы каталога")}
+            >
               {Array.from({ length: pages }, (_, index) => index + 1).map(
                 (number) => (
                   <button
                     type="button"
                     key={number}
-                    aria-label={`Страница ${number}`}
+                    aria-label={t("Страница {number}", { number })}
                     aria-current={number === current ? "page" : undefined}
                     onClick={() => changePage(number)}
                   >
@@ -434,9 +473,11 @@ export function Storefront() {
       <footer className="shop-footer">
         <div className="shop-wrap">
           <Brand />
-          <a href="#catalog">Каталог</a>
-          <a href="#services">Доставка и установка</a>
-          <span>Ашхабад · {STORE.hours.toLowerCase()}</span>
+          <a href="#catalog">{t("Каталог")}</a>
+          <a href="#services">{t("Доставка и установка")}</a>
+          <span>
+            {t("Ашхабад")} · {t(STORE.hours)}
+          </span>
         </div>
       </footer>
       <ShopPanel
@@ -454,7 +495,12 @@ export function Storefront() {
         onClose={() => setProduct(null)}
         onCloseAutoFocus={restoreFocus}
       />
-      <Toaster position="bottom-center" closeButton />
+      <Toaster
+        position="bottom-center"
+        closeButton
+        containerAriaLabel={t("Уведомления")}
+        toastOptions={{ closeButtonAriaLabel: t("Закрыть") }}
+      />
     </div>
   );
 }

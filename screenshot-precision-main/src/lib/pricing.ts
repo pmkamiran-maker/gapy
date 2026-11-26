@@ -1,7 +1,7 @@
 import { DELIVERY_PRICE, FREE_DELIVERY_FROM, STORE } from "./store-config";
 
-export function formatPrice(value: number): string {
-  const n = new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 0 }).format(Math.round(value));
+export function formatPrice(value: number, locale = "ru-RU"): string {
+  const n = new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(Math.round(value));
   return `${n.replace(/\u00a0/g, " ")} ${STORE.currency}`;
 }
 

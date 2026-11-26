@@ -828,3 +828,40 @@
     transition: none;
   }
 }
+
+.shop-top-settings {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.45rem, 2vw, 1.2rem);
+}
+
+.shop-language {
+  position: relative;
+  flex: none;
+}
+
+.shop-language select {
+  min-height: 32px;
+  padding: 0.2rem 1.55rem 0.2rem 0.55rem;
+  appearance: none;
+  border: 1px solid #ffffff66;
+  border-radius: 4px;
+  background: var(--shop-olive-dark);
+  color: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.shop-language svg {
+  position: absolute;
+  right: 0.45rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+@media (max-width: 360px) {
+  .shop-top .shop-hours {
+    font-size: 0.75rem;
+  }
+}

@@ -1,3 +1,4 @@
+import { useShopLocale } from "@/lib/shop-locale";
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { toast } from "sonner";
 
@@ -47,6 +48,7 @@ export function lineTotal(line: CartLine): number {
 }
 
 export function ShopProvider({ children }: { children: ReactNode }) {
+  const { t, productText } = useShopLocale();
   const [state, setState] = useState<ShopState>(EMPTY);
   const [hydrated, setHydrated] = useState(false);
 
@@ -92,10 +94,10 @@ export function ShopProvider({ children }: { children: ReactNode }) {
         : [...s.cart, { key, id, qty, ...(color ? { color } : {}), ...(size ? { size } : {}) }];
       return { ...s, cart };
     });
-    toast.success(product.stock === "order" ? "Добавлено в заказ" : "Добавлено в корзину", {
-      description: product.name,
+    toast.success(t(product.stock === "order" ? "Добавлено в заказ" : "Добавлено в корзину"), {
+      description: productText(product).name,
     });
-  }, []);
+  }, [t, productText]);
 
   const setQty = useCallback((key: string, qty: number) => {
     setState((s) => ({
@@ -121,12 +123,12 @@ export function ShopProvider({ children }: { children: ReactNode }) {
     setState((s) => {
       if (s.compare.includes(id)) return { ...s, compare: s.compare.filter((x) => x !== id) };
       if (s.compare.length >= MAX_COMPARE) {
-        toast.message(`В сравнении может быть до ${MAX_COMPARE} товаров`);
+        toast.message(t("В сравнении может быть до {count} товаров", { count: MAX_COMPARE }));
         return s;
       }
       return { ...s, compare: [...s.compare, id] };
     });
-  }, []);
+  }, [t]);
 
   const clearCompare = useCallback(() => setState((s) => ({ ...s, compare: [] })), []);
 

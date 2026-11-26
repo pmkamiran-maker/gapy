@@ -1,3 +1,4 @@
+import { shopMetadata } from "@/lib/shop-locale";
 import { createFileRoute } from "@tanstack/react-router";
 
 import { Storefront } from "@/components/shop/storefront";
