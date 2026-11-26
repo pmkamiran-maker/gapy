@@ -70,7 +70,12 @@ export function ShopProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    if (hydrated) window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    if (!hydrated) return;
+    try {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch {
+      // Keep the shop usable in browsers that block storage or run out of quota.
+    }
   }, [state, hydrated]);
 
   const addToCart = useCallback<ShopContextValue["addToCart"]>((id, opts) => {

@@ -1,6 +1,6 @@
-# Screenshot Precision
+# Портал
 
-Implement exactly the screenshot and nothing else
+Витрина дверей и фурнитуры с каталогом, избранным, сравнением и расчётом корзины. Данные корзины и списков хранятся в браузере. Корзина формирует расчёт для скачивания.
 
 This project was built with [Lovable](https://lovable.dev).
 
@@ -19,6 +19,7 @@ Prefer working locally? You need Node.js and npm — [install with nvm](https://
 ```sh
 git clone <this-repository-url>
 cd <repository-name>
+cd screenshot-precision-main
 npm i
 npm run dev
 ```
