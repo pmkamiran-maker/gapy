@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 
-import { productById } from "@/data/catalog";
 import { ORDER_REQUEST_PATH, orderFields } from "@/lib/order-request";
 import { deliveryCost } from "@/lib/pricing";
 import { useShopLocale } from "@/lib/shop-locale";
@@ -9,7 +8,7 @@ import { useShop } from "@/lib/shop-store";
 type Status = "idle" | "sending" | "invalid" | "unavailable" | "failed";
 
 export function OrderForm({ onBack }: { onBack: () => void }) {
-  const { cart, cartTotal } = useShop();
+  const { cart, cartTotal, productById } = useShop();
   const { locale, price, t } = useShopLocale();
   const [fulfillment, setFulfillment] = useState<"delivery" | "pickup">(
     "delivery",

@@ -46,8 +46,8 @@ function localizedProduct(locale: Locale, product: Product) {
   const translated =
     locale === "ru" ? undefined : productTranslations[product.slug]?.[locale];
   return {
-    name: translated?.[0] ?? product.name,
-    description: translated?.[1] ?? product.description,
+    name: product.catalogText?.name ?? translated?.[0] ?? product.name,
+    description: product.catalogText?.description ?? translated?.[1] ?? product.description,
   };
 }
 

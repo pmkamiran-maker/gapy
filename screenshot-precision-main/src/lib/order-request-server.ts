@@ -1,4 +1,6 @@
-import { productById } from "@/data/catalog";
+import { PRODUCTS } from "@/data/catalog";
+import { applyCatalogChanges, readCatalogChanges } from "@/lib/live-catalog";
+import type { PublicSupabaseConfig } from "@/lib/supabase-config";
 import { ORDER_REQUEST_PATH, orderRequestSchema } from "@/lib/order-request";
 import { deliveryCost } from "@/lib/pricing";
 import { STORE } from "@/lib/store-config";
@@ -57,6 +59,7 @@ export async function handleOrderRequest(
   request: Request,
   env: OrderEnvironment,
   send = fetch,
+  supabase: PublicSupabaseConfig | null = null,
 ) {
   const url = new URL(request.url);
   if (url.pathname !== ORDER_REQUEST_PATH) return undefined;
@@ -80,10 +83,21 @@ export async function handleOrderRequest(
   if (!parsed.success) return reply(400, { error: "invalid" });
 
   const { id, locale, contact, items } = parsed.data;
+  let products = PRODUCTS;
+  if (supabase) {
+    try {
+      products = applyCatalogChanges(
+        await readCatalogChanges(supabase),
+      ).products;
+    } catch {
+      return reply(503, { error: "catalog_unavailable" });
+    }
+  }
+  const byId = new Map(products.map((product) => [product.id, product]));
   const lines = [];
   const seen = new Set<string>();
   for (const line of items) {
-    const item = productById(line.id);
+    const item = byId.get(line.id);
     const key = JSON.stringify([line.id, line.color, line.size]);
     if (
       !item ||

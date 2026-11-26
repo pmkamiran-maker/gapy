@@ -2,6 +2,7 @@ import "./lib/error-capture";
 
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
+import { CATALOG_PATH, readCatalogChanges } from "./lib/live-catalog";
 import { handleOrderRequest } from "./lib/order-request-server";
 import { publicSupabaseConfig, SUPABASE_CONFIG_PATH } from "./lib/supabase-config";
 
@@ -55,14 +56,23 @@ export default {
       const runtime = (request as Request & {
         runtime?: { cloudflare?: { env?: unknown } };
       }).runtime?.cloudflare?.env ?? env ?? (typeof process !== "undefined" ? process.env : {});
-      if (new URL(request.url).pathname === SUPABASE_CONFIG_PATH) {
+      const path = new URL(request.url).pathname;
+      const settings = runtime as { SUPABASE_URL?: string; SUPABASE_PUBLISHABLE_KEY?: string };
+      const supabase = publicSupabaseConfig(settings.SUPABASE_URL, settings.SUPABASE_PUBLISHABLE_KEY);
+      if (path === SUPABASE_CONFIG_PATH || path === CATALOG_PATH) {
         const headers = { "Cache-Control": "no-store" };
         if (request.method !== "GET") return new Response(null, { status: 405, headers: { ...headers, Allow: "GET" } });
-        const config = runtime as { SUPABASE_URL?: string; SUPABASE_PUBLISHABLE_KEY?: string };
-        return Response.json(publicSupabaseConfig(config.SUPABASE_URL, config.SUPABASE_PUBLISHABLE_KEY), { headers });
+        if (path === SUPABASE_CONFIG_PATH) return Response.json(supabase, { headers });
+        try {
+          return Response.json(supabase ? await readCatalogChanges(supabase) : [], { headers });
+        } catch {
+          return Response.json({ error: "catalog_unavailable" }, { status: 503, headers });
+        }
       }
 
-      const orderResponse = await handleOrderRequest(request, runtime as Parameters<typeof handleOrderRequest>[1]);
+      const orderResponse = await handleOrderRequest(
+        request, runtime as Parameters<typeof handleOrderRequest>[1], fetch, supabase,
+      );
       if (orderResponse) return orderResponse;
 
       const handler = await getServerEntry();

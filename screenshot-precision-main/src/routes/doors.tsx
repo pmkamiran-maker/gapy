@@ -15,7 +15,7 @@ export const Route = createFileRoute("/doors")({
 
 function Doors() {
   return (
-    <ShopProvider>
+    <ShopProvider liveCatalog>
       <Storefront
         catalog={(openProduct) => <DoorCatalog onProduct={openProduct} />}
       />

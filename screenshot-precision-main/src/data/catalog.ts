@@ -26,6 +26,7 @@ export interface ColorVariant {
 }
 
 export interface Product {
+  catalogText?: { name?: string; description?: string };
   id: string;
   slug: string;
   name: string;

@@ -8,15 +8,9 @@ import {
   DialogDescription,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  MATERIALS,
-  brandName,
-  labelOf,
-  productById,
-  type Product,
-} from "@/data/catalog";
+import { MATERIALS, brandName, labelOf, type Product } from "@/data/catalog";
 import { buyAction, deliveryCost, stockLabel } from "@/lib/pricing";
-import { lineTotal, productsByIds, useShop } from "@/lib/shop-store";
+import { useShop } from "@/lib/shop-store";
 import { STORE } from "@/lib/store-config";
 import { OrderForm } from "./order-form";
 
@@ -156,7 +150,8 @@ export function ProductDetails({
 }
 
 function CartContents() {
-  const { cart, cartTotal, removeLine, setQty } = useShop();
+  const { cart, cartTotal, removeLine, setQty, productById, lineTotal } =
+    useShop();
   const [ordering, setOrdering] = useState(false);
   const { t, price, productText, locale } = useShopLocale();
   if (cart.length === 0)
@@ -301,7 +296,7 @@ function FavoriteContents({
 }: {
   onProduct: (item: Product) => void;
 }) {
-  const { favorites, toggleFavorite } = useShop();
+  const { favorites, toggleFavorite, productsByIds } = useShop();
   const { t, price, productText } = useShopLocale();
   if (favorites.length === 0)
     return (
@@ -346,7 +341,7 @@ function CompareContents({
 }: {
   onProduct: (item: Product) => void;
 }) {
-  const { compare, toggleCompare } = useShop();
+  const { compare, toggleCompare, productsByIds } = useShop();
   const { t, price, productText } = useShopLocale();
   const items = productsByIds(compare);
   if (items.length === 0)

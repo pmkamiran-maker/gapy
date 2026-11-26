@@ -1,19 +1,11 @@
 import { DoorClosed } from "lucide-react";
 import { useEffect, useState, type FormEvent } from "react";
-import type { Session, SupabaseClient } from "@supabase/supabase-js";
 
 import door from "@/assets/hero.jpg";
 import { useShopLocale } from "@/lib/shop-locale";
 import { STORE } from "@/lib/store-config";
-import {
-  publicSupabaseConfig,
-  SUPABASE_CONFIG_PATH,
-} from "@/lib/supabase-config";
+import { useCatalogAdmin, useShopAuth } from "@/lib/use-shop-auth";
 import { LanguagePicker } from "./language-picker";
-
-type AuthState =
-  | { status: "loading" | "unconfigured" | "unavailable" }
-  | { status: "ready"; client: SupabaseClient; session: Session | null };
 
 type Feedback =
   | "invalid"
@@ -38,8 +30,6 @@ const errors: Record<Feedback, string> = {
   signUpFailed: "Не удалось завершить регистрацию. Попробуйте ещё раз.",
 };
 
-const clients = new Map<string, SupabaseClient>();
-
 export const LOGIN_TITLE = "Вход в аккаунт";
 
 export const REGISTER_TITLE = "Регистрация";
@@ -50,67 +40,12 @@ export function LoginPage({
   registration?: boolean;
 }) {
   const { t } = useShopLocale();
-  const [auth, setAuth] = useState<AuthState>({ status: "loading" });
+  const [auth, setAuth] = useShopAuth();
+  const canManageCatalog = useCatalogAdmin(auth);
   const [feedback, setFeedback] = useState<Feedback>();
   const [busy, setBusy] = useState(false);
   const [checkEmail, setCheckEmail] = useState(false);
   const title = registration ? REGISTER_TITLE : LOGIN_TITLE;
-
-  useEffect(() => {
-    const controller = new AbortController();
-    let unsubscribe: (() => void) | undefined;
-
-    async function initialize() {
-      try {
-        const response = await fetch(SUPABASE_CONFIG_PATH, {
-          signal: controller.signal,
-        });
-        if (!response.ok) throw new Error();
-        const config: { url?: string; key?: string } | null =
-          await response.json();
-        if (controller.signal.aborted) return;
-        const settings = publicSupabaseConfig(config?.url, config?.key);
-        if (!settings) {
-          setAuth({ status: "unconfigured" });
-          return;
-        }
-
-        let client = clients.get(settings.url);
-        if (!client) {
-          const { createClient } = await import("@supabase/supabase-js");
-          if (controller.signal.aborted) return;
-          client =
-            clients.get(settings.url) ??
-            createClient(settings.url, settings.key, {
-              auth: {
-                flowType: "pkce",
-                detectSessionInUrl: true,
-                persistSession: true,
-                autoRefreshToken: true,
-              },
-            });
-          clients.set(settings.url, client);
-        }
-        const activeClient = client;
-        // INITIAL_SESSION covers the stored session and later events keep the page in sync.
-        const { data } = activeClient.auth.onAuthStateChange(
-          (_event, session) => {
-            if (!controller.signal.aborted)
-              setAuth({ status: "ready", client: activeClient, session });
-          },
-        );
-        unsubscribe = () => data.subscription.unsubscribe();
-      } catch {
-        if (!controller.signal.aborted) setAuth({ status: "unavailable" });
-      }
-    }
-
-    void initialize();
-    return () => {
-      controller.abort();
-      unsubscribe?.();
-    };
-  }, []);
 
   useEffect(() => {
     document.title = `${t(title)} — ${t(STORE.name)}`;
@@ -223,6 +158,11 @@ export function LoginPage({
           {session ? (
             <div className="shop-auth-form">
               <p>{session.user.email ?? t("Вы вошли в аккаунт.")}</p>
+              {canManageCatalog && (
+                <a href="/admin" className="shop-text-link">
+                  {t("Управление каталогом")}
+                </a>
+              )}
               <button
                 type="button"
                 className="shop-button"

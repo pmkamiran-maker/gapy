@@ -5,7 +5,6 @@ import { ProductCard } from "@/components/shop/product-card";
 import {
   CATALOG_SLUGS,
   CATALOG_TITLES,
-  PRODUCTS,
   type CatalogSlug,
   type Product,
 } from "@/data/catalog";
@@ -15,13 +14,8 @@ import {
   DialogDescription,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  workbookDoorImage,
-  workbookDoors,
-  type DoorKind,
-  type DoorVariant,
-  type WorkbookDoor,
-} from "@/data/workbook-doors";
+import type { CatalogKind, CatalogPosition } from "@/lib/live-catalog";
+import { useShop } from "@/lib/shop-store";
 import {
   SORT_OPTIONS,
   filterProducts,
@@ -36,25 +30,21 @@ import { STORE } from "@/lib/store-config";
 export const DOOR_CATALOG_TITLE = "Каталог дверей и фурнитуры";
 
 type Source = "all" | "priceList" | "demo";
-type Category = DoorKind | CatalogSlug;
+type Category = CatalogKind | CatalogSlug;
 
-const groups: Record<DoorKind, string> = {
+const groups: Record<CatalogKind, string> = {
   wood: "Деревянные двери",
   steel: "Стальные двери",
+  hardware: "Фурнитура",
+  trim: "Погонаж",
 };
 
-const positions = workbookDoors
-  .flatMap((door) => door.variants.map((variant) => ({ door, variant })))
-  .sort((a, b) => a.variant.row - b.variant.row);
-
 function DoorDetails({
-  door,
-  variant,
+  item,
   close,
   restoreFocus,
 }: {
-  door: WorkbookDoor;
-  variant: DoorVariant;
+  item: CatalogPosition;
   close: () => void;
   restoreFocus: (event: Event) => void;
 }) {
@@ -71,15 +61,17 @@ function DoorDetails({
         onCloseAutoFocus={restoreFocus}
       >
         <div className="workbook-dialog-heading">
-          <img src={workbookDoorImage(door)} alt="" width={105} height={140} />
+          <img src={item.image} alt="" width={105} height={140} />
           <div>
             <DialogTitle className="shop-dialog-title">
-              {t(door.model)}
+              {t(item.name)}
             </DialogTitle>
             <DialogDescription className="shop-dialog-description">
-              {t(door.detail)}
+              {t(item.detail)}
             </DialogDescription>
-            <p>{t("Иллюстрация по описанию")}</p>
+            {item.image.startsWith("/catalog-doors/") && (
+              <p>{t("Иллюстрация по описанию")}</p>
+            )}
           </div>
         </div>
         <div
@@ -96,36 +88,40 @@ function DoorDetails({
                 <th scope="col">{t("Размер в названии")}</th>
                 <th scope="col">{t("Поле «Длина»")}</th>
                 <th scope="col">{t("Открывание")}</th>
-                <th scope="col">50% · USD</th>
+                <th scope="col">{item.row ? "50% · USD" : t("Цена, USD")}</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <th scope="row">{variant.row}</th>
+                <th scope="row">{item.row ?? "—"}</th>
                 <td>
-                  {variant.width} × {variant.height}
+                  {item.width && item.height
+                    ? `${item.width} × ${item.height}`
+                    : "—"}
                 </td>
                 <td>
-                  {variant.namedSize ?? variant.namedWidth ?? "—"}
-                  {variant.namedWidth !== undefined &&
-                    variant.namedWidth !== variant.width && (
+                  {item.namedSize ?? item.namedWidth ?? "—"}
+                  {item.namedWidth !== undefined &&
+                    item.namedWidth !== item.width && (
                       <strong className="workbook-discrepancy">
                         {t("Ширина расходится")}
                       </strong>
                     )}
                 </td>
-                <td>{variant.listedLength ?? "—"}</td>
-                <td>{variant.opening ? t(variant.opening) : "—"}</td>
-                <td>{price.format(variant.price50)}</td>
+                <td>{item.listedLength ?? "—"}</td>
+                <td>{item.opening ? t(item.opening) : "—"}</td>
+                <td>{price.format(item.price)}</td>
               </tr>
             </tbody>
           </table>
         </div>
-        <p className="workbook-note">
-          {t(
-            "Размеры показаны по исходным записям. Подпись «см» в Excel интерпретирована как «мм» для ширины и высоты.",
-          )}
-        </p>
+        {item.row && (
+          <p className="workbook-note">
+            {t(
+              "Размеры показаны по исходным записям. Подпись «см» в Excel интерпретирована как «мм» для ширины и высоты.",
+            )}
+          </p>
+        )}
       </DialogContent>
     </Dialog>
   );
@@ -137,15 +133,14 @@ export function DoorCatalog({
   onProduct: (product: Product) => void;
 }) {
   const { t, productText } = useShopLocale();
+  const { positions, products, catalogStatus } = useShop();
   const [category, setCategory] = useState<Category>("all");
   const [source, setSource] = useState<Source>("all");
   const [sort, setSort] = useState<SortKey>("popular");
   const [stock, setStock] = useState(false);
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
-  const [selected, setSelected] = useState<(typeof positions)[number] | null>(
-    null,
-  );
+  const [selected, setSelected] = useState<CatalogPosition | null>(null);
   const opener = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -156,15 +151,15 @@ export function DoorCatalog({
   const fromWorkbook =
     source === "demo"
       ? []
-      : positions.filter(({ door, variant }) => {
-          if (category !== "all" && category !== door.kind) return false;
+      : positions.filter((item) => {
+          if (category !== "all" && category !== item.kind) return false;
           if (!needle) return true;
-          const { namedSize, width, namedWidth, height, opening } = variant;
+          const { namedSize, width, namedWidth, height, opening } = item;
           const fields = [
-            door.model,
-            door.detail,
-            t(door.model),
-            t(door.detail),
+            item.name,
+            item.detail,
+            t(item.name),
+            t(item.detail),
             namedSize,
             width,
             namedWidth,
@@ -182,7 +177,7 @@ export function DoorCatalog({
   const fromDemo =
     source === "priceList" || category === "wood" || category === "steel"
       ? []
-      : filterProducts(PRODUCTS, category, {
+      : filterProducts(products, category, {
           stock: source === "demo" && stock,
         }).filter((product) => {
           if (!needle) return true;
@@ -195,10 +190,7 @@ export function DoorCatalog({
           );
         });
   const entries = [
-    ...fromWorkbook.map((position) => ({
-      ...position,
-      source: "priceList" as const,
-    })),
+    ...fromWorkbook.map((item) => ({ item, source: "priceList" as const })),
     ...sortProducts(fromDemo, source === "demo" ? sort : "popular").map(
       (product) => ({ product, source: "demo" as const }),
     ),
@@ -266,12 +258,17 @@ export function DoorCatalog({
                 <option value="steel">{t(groups.steel)}</option>
               </>
             )}
-            {source !== "priceList" &&
-              CATALOG_SLUGS.filter((slug) => slug !== "all").map((slug) => (
-                <option key={slug} value={slug}>
-                  {t(CATALOG_TITLES[slug])}
-                </option>
-              ))}
+            {CATALOG_SLUGS.filter(
+              (slug) =>
+                slug !== "all" &&
+                (source !== "priceList" ||
+                  slug === "hardware" ||
+                  slug === "trim"),
+            ).map((slug) => (
+              <option key={slug} value={slug}>
+                {t(CATALOG_TITLES[slug])}
+              </option>
+            ))}
           </select>
           <ChevronDown size={16} aria-hidden="true" />
         </label>
@@ -286,7 +283,7 @@ export function DoorCatalog({
             }}
           >
             <option value="all">{t("Все товары")}</option>
-            <option value="priceList">{t("Из прайс-листа")}</option>
+            <option value="priceList">{t("Основной каталог")}</option>
             <option value="demo">{t("Демотовары")}</option>
           </select>
           <ChevronDown size={16} aria-hidden="true" />
@@ -325,62 +322,77 @@ export function DoorCatalog({
         )}
       </div>
       <p className="workbook-results" role="status">
-        {t("Найдено позиций: {count}", { count: entries.length })}
+        {catalogStatus === "ready"
+          ? t("Найдено позиций: {count}", { count: entries.length })
+          : t(
+              catalogStatus === "loading"
+                ? "Загружаем каталог…"
+                : "Каталог временно недоступен. Обновите страницу.",
+            )}
       </p>
-      {items.length ? (
-        <div className="shop-grid workbook-grid">
-          {items.map((entry) => {
-            if (entry.source === "demo") {
+      {catalogStatus === "ready" &&
+        (items.length ? (
+          <div className="shop-grid workbook-grid">
+            {items.map((entry) => {
+              if (entry.source === "demo") {
+                return (
+                  <ProductCard
+                    key={entry.product.id}
+                    product={entry.product}
+                    onOpen={() => onProduct(entry.product)}
+                  />
+                );
+              }
+              const { item } = entry;
               return (
-                <ProductCard
-                  key={entry.product.id}
-                  product={entry.product}
-                  onOpen={() => onProduct(entry.product)}
-                />
+                <article className="shop-card" key={item.id}>
+                  <img
+                    src={item.image}
+                    alt=""
+                    loading="lazy"
+                    width={314}
+                    height={418}
+                  />
+                  <div className="shop-card-body">
+                    <p className="shop-card-brand">{t(groups[item.kind])}</p>
+                    <h2>{t(item.name)}</h2>
+                    <p>{t(item.detail)}</p>
+                    {(item.namedSize ||
+                      (item.width && item.height) ||
+                      item.opening) && (
+                      <p>
+                        {item.namedSize ??
+                          (item.width && item.height
+                            ? `${item.width} × ${item.height}`
+                            : "")}{" "}
+                        {item.width && item.height ? t("мм") : ""}
+                        {item.opening && ` · ${t(item.opening)}`}
+                      </p>
+                    )}
+                    <button
+                      type="button"
+                      className="shop-button"
+                      onClick={(event) => {
+                        opener.current = event.currentTarget;
+                        setSelected(item);
+                      }}
+                      aria-label={t("Размеры и цены для {name}", {
+                        name: item.row
+                          ? `${t(item.name)} · ${t(item.detail)} · ${t("Строка Excel")} ${item.row}`
+                          : t(item.name),
+                      })}
+                    >
+                      {t("Размеры и цены")}
+                    </button>
+                  </div>
+                </article>
               );
-            }
-            const { door, variant } = entry;
-            return (
-              <article className="shop-card" key={variant.row}>
-                <img
-                  src={workbookDoorImage(door)}
-                  alt=""
-                  loading="lazy"
-                  width={314}
-                  height={418}
-                />
-                <div className="shop-card-body">
-                  <p className="shop-card-brand">{t(groups[door.kind])}</p>
-                  <h2>{t(door.model)}</h2>
-                  <p>{t(door.detail)}</p>
-                  <p>
-                    {variant.namedSize ??
-                      `${variant.width} × ${variant.height}`}{" "}
-                    {t("мм")}
-                    {variant.opening && ` · ${t(variant.opening)}`}
-                  </p>
-                  <button
-                    type="button"
-                    className="shop-button"
-                    onClick={(event) => {
-                      opener.current = event.currentTarget;
-                      setSelected({ door, variant });
-                    }}
-                    aria-label={t("Размеры и цены для {name}", {
-                      name: `${t(door.model)} · ${t(door.detail)} · ${t("Строка Excel")} ${variant.row}`,
-                    })}
-                  >
-                    {t("Размеры и цены")}
-                  </button>
-                </div>
-              </article>
-            );
-          })}
-        </div>
-      ) : (
-        <p className="shop-empty">{t("Товары не найдены")}</p>
-      )}
-      {pages > 1 && (
+            })}
+          </div>
+        ) : (
+          <p className="shop-empty">{t("Товары не найдены")}</p>
+        ))}
+      {catalogStatus === "ready" && pages > 1 && (
         <nav className="shop-pagination" aria-label={t("Страницы каталога")}>
           {Array.from({ length: pages }, (_, index) => index + 1).map(
             (number) => (
@@ -402,8 +414,7 @@ export function DoorCatalog({
       )}
       {selected && (
         <DoorDetails
-          door={selected.door}
-          variant={selected.variant}
+          item={selected}
           close={() => setSelected(null)}
           restoreFocus={(event) => {
             event.preventDefault();

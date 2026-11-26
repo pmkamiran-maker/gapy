@@ -1071,3 +1071,57 @@
     display: none;
   }
 }
+
+.catalog-admin {
+  min-height: 100dvh;
+}
+
+.catalog-admin-main {
+  display: grid;
+  gap: 1.25rem;
+  padding-block: 2rem 4rem;
+}
+
+.catalog-admin-main h1 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+}
+
+.catalog-admin-main > .shop-button {
+  justify-self: start;
+}
+
+.catalog-admin-controls,
+.catalog-admin-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.catalog-admin-feedback[role="alert"] {
+  color: #8a3927;
+}
+
+.catalog-admin td:last-child {
+  min-width: 180px;
+}
+
+.catalog-admin th small {
+  display: block;
+  color: var(--shop-muted);
+  font-weight: 400;
+}
+
+.catalog-editor-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr));
+  gap: 0.8rem;
+}
+
+.catalog-editor textarea {
+  width: 100%;
+  padding: 0.4rem 0.7rem;
+  border: 1px solid var(--shop-line);
+  border-radius: 4px;
+  background: white;
+}

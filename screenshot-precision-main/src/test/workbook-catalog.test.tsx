@@ -2,6 +2,7 @@ import { fireEvent, render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import { DoorCatalog } from "@/components/shop/door-catalog";
+import { ShopProvider } from "@/lib/shop-store";
 import { workbookDoors } from "@/data/workbook-doors";
 
 describe("Workbook door catalog", () => {
@@ -23,7 +24,11 @@ describe("Workbook door catalog", () => {
   });
 
   it("filters the catalog and shows only the 50% USD price for each variant", () => {
-    render(<DoorCatalog onProduct={() => {}} />);
+    render(
+      <ShopProvider>
+        <DoorCatalog onProduct={() => {}} />
+      </ShopProvider>,
+    );
     expect(screen.getByRole("status")).toHaveTextContent(
       "Найдено позиций: 131",
     );

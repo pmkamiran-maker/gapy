@@ -22,7 +22,7 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <ShopProvider>
+    <ShopProvider liveCatalog>
       <Storefront />
     </ShopProvider>
   );
