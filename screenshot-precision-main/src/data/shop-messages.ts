@@ -395,4 +395,11 @@ export const shopMessages: Readonly<
   "HY38-Зелёный кристалл": ["HY38-Ýaşyl kristal", "HY38-Green Crystal"],
   "C2003-Зелёный кристалл": ["C2003-Ýaşyl kristal", "C2003-Green Crystal"],
   "Каталог из прайс-листа": ["Baha sanawyndaky katalog", "Price-list catalog"],
+  Демокаталог: ["Synag katalogy", "Demo catalog"],
+  "Перейти к содержимому": ["Mazmuna geç", "Skip to content"],
+  "Найдено позиций: {count}": [
+    "Tapylan görnüşler: {count}",
+    "Items found: {count}",
+  ],
+  мм: ["mm", "mm"],
 };

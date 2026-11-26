@@ -24,22 +24,29 @@ describe("Workbook door catalog", () => {
 
   it("filters the catalog and shows both USD columns for each variant", () => {
     render(<WorkbookCatalog />);
+    expect(screen.getByRole("status")).toHaveTextContent(
+      "Найдено позиций: 100",
+    );
     fireEvent.change(
       screen.getByRole("combobox", { name: "Категории каталога" }),
       {
         target: { value: "steel" },
       },
     );
+    expect(screen.getByRole("status")).toHaveTextContent("Найдено позиций: 78");
     fireEvent.change(screen.getByRole("searchbox"), {
       target: { value: "Y10" },
     });
-    expect(screen.getByRole("status")).toHaveTextContent("Найдено товаров: 2");
+    expect(screen.getByRole("status")).toHaveTextContent("Найдено позиций: 4");
     fireEvent.click(
       screen.getByRole("button", {
-        name: "Размеры и цены для Y10 · Полуторная (в тон)",
+        name: "Размеры и цены для Y10 · Полуторная (в тон) · Строка Excel 175",
       }),
     );
     const table = within(screen.getByRole("table"));
+    expect(
+      table.queryByRole("rowheader", { name: "173" }),
+    ).not.toBeInTheDocument();
     expect(
       table.getByRole("columnheader", { name: "45% · USD" }),
     ).toBeInTheDocument();

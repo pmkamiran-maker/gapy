@@ -12,6 +12,7 @@ import {
   workbookDoorImage,
   workbookDoors,
   type DoorKind,
+  type DoorVariant,
   type WorkbookDoor,
 } from "@/data/workbook-doors";
 import { paginate } from "@/lib/catalog-search";
@@ -25,12 +26,18 @@ const groups: Record<DoorKind, string> = {
   steel: "Стальные двери",
 };
 
+const positions = workbookDoors
+  .flatMap((door) => door.variants.map((variant) => ({ door, variant })))
+  .sort((a, b) => a.variant.row - b.variant.row);
+
 function DoorDetails({
   door,
+  variant,
   close,
   restoreFocus,
 }: {
   door: WorkbookDoor;
+  variant: DoorVariant;
   close: () => void;
   restoreFocus: (event: Event) => void;
 }) {
@@ -77,27 +84,25 @@ function DoorDetails({
               </tr>
             </thead>
             <tbody>
-              {door.variants.map((variant) => (
-                <tr key={variant.row}>
-                  <th scope="row">{variant.row}</th>
-                  <td>
-                    {variant.width} × {variant.height}
-                  </td>
-                  <td>
-                    {variant.namedSize ?? variant.namedWidth ?? "—"}
-                    {variant.namedWidth !== undefined &&
-                      variant.namedWidth !== variant.width && (
-                        <strong className="workbook-discrepancy">
-                          {t("Ширина расходится")}
-                        </strong>
-                      )}
-                  </td>
-                  <td>{variant.listedLength ?? "—"}</td>
-                  <td>{variant.opening ? t(variant.opening) : "—"}</td>
-                  <td>{price.format(variant.price45)}</td>
-                  <td>{price.format(variant.price50)}</td>
-                </tr>
-              ))}
+              <tr>
+                <th scope="row">{variant.row}</th>
+                <td>
+                  {variant.width} × {variant.height}
+                </td>
+                <td>
+                  {variant.namedSize ?? variant.namedWidth ?? "—"}
+                  {variant.namedWidth !== undefined &&
+                    variant.namedWidth !== variant.width && (
+                      <strong className="workbook-discrepancy">
+                        {t("Ширина расходится")}
+                      </strong>
+                    )}
+                </td>
+                <td>{variant.listedLength ?? "—"}</td>
+                <td>{variant.opening ? t(variant.opening) : "—"}</td>
+                <td>{price.format(variant.price45)}</td>
+                <td>{price.format(variant.price50)}</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -116,7 +121,9 @@ export function WorkbookCatalog() {
   const [kind, setKind] = useState<DoorKind | "all">("all");
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
-  const [selected, setSelected] = useState<WorkbookDoor | null>(null);
+  const [selected, setSelected] = useState<(typeof positions)[number] | null>(
+    null,
+  );
   const opener = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -124,23 +131,22 @@ export function WorkbookCatalog() {
   }, [t]);
 
   const needle = query.trim().toLowerCase();
-  const matching = workbookDoors.filter((door) => {
+  const matching = positions.filter(({ door, variant }) => {
     if (kind !== "all" && kind !== door.kind) return false;
+    if (!needle) return true;
+    const { namedSize, width, namedWidth, height, opening } = variant;
     const fields = [
       door.model,
       door.detail,
       t(door.model),
       t(door.detail),
-      ...door.variants.flatMap(
-        ({ namedSize, width, namedWidth, height, opening }) => [
-          namedSize,
-          width,
-          namedWidth,
-          height,
-          opening,
-          opening && t(opening),
-        ],
-      ),
+      namedSize,
+      width,
+      namedWidth,
+      height,
+      `${width} × ${height}`,
+      opening,
+      opening && t(opening),
     ];
     return fields.some(
       (field) =>
@@ -191,6 +197,7 @@ export function WorkbookCatalog() {
             <Search size={19} aria-hidden="true" />
             <span className="sr-only">{t("Поиск по каталогу")}</span>
             <input
+              id="door-search"
               type="search"
               value={query}
               placeholder={t("Модель, отделка или размер")}
@@ -217,12 +224,12 @@ export function WorkbookCatalog() {
           </label>
         </div>
         <p className="workbook-results" role="status">
-          {t("Найдено товаров: {count}", { count: matching.length })}
+          {t("Найдено позиций: {count}", { count: matching.length })}
         </p>
         {items.length ? (
           <div className="shop-grid workbook-grid">
-            {items.map((door) => (
-              <article className="shop-card" key={door.id}>
+            {items.map(({ door, variant }) => (
+              <article className="shop-card" key={variant.row}>
                 <img
                   src={workbookDoorImage(door)}
                   alt=""
@@ -234,15 +241,21 @@ export function WorkbookCatalog() {
                   <p className="shop-card-brand">{t(groups[door.kind])}</p>
                   <h2>{t(door.model)}</h2>
                   <p>{t(door.detail)}</p>
+                  <p>
+                    {variant.namedSize ??
+                      `${variant.width} × ${variant.height}`}{" "}
+                    {t("мм")}
+                    {variant.opening && ` · ${t(variant.opening)}`}
+                  </p>
                   <button
                     type="button"
                     className="shop-button"
                     onClick={(event) => {
                       opener.current = event.currentTarget;
-                      setSelected(door);
+                      setSelected({ door, variant });
                     }}
                     aria-label={t("Размеры и цены для {name}", {
-                      name: `${t(door.model)} · ${t(door.detail)}`,
+                      name: `${t(door.model)} · ${t(door.detail)} · ${t("Строка Excel")} ${variant.row}`,
                     })}
                   >
                     {t("Размеры и цены")}
@@ -277,7 +290,8 @@ export function WorkbookCatalog() {
       </main>
       {selected && (
         <DoorDetails
-          door={selected}
+          door={selected.door}
+          variant={selected.variant}
           close={() => setSelected(null)}
           restoreFocus={(event) => {
             event.preventDefault();

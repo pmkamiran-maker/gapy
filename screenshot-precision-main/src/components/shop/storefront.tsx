@@ -204,8 +204,8 @@ export function Storefront() {
 
   return (
     <div className="shop" id="top">
-      <a className="shop-skip" href="#catalog">
-        {t("Перейти к каталогу")}
+      <a className="shop-skip" href="#storefront-main">
+        {t("Перейти к содержимому")}
       </a>
       <div className="shop-top">
         <div className="shop-wrap">
@@ -228,29 +228,20 @@ export function Storefront() {
         <div className="shop-wrap shop-header-row">
           <Brand />
           <nav className="shop-nav" aria-label={t("Основное меню")}>
+            <a href="/doors">{t("Каталог")}</a>
             <a href="#catalog" onClick={() => selectCategory("all")}>
-              {t("Каталог")}
-            </a>
-            <a href="#catalog" onClick={() => selectCategory("interior")}>
-              {t("Межкомнатные")}
-            </a>
-            <a href="#catalog" onClick={() => selectCategory("entrance")}>
-              {t("Входные")}
-            </a>
-            <a href="#catalog" onClick={() => selectCategory("hardware")}>
-              {t("Фурнитура")}
+              {t("Демокаталог")}
             </a>
             <a href="#services">{t("Услуги")}</a>
           </nav>
           <div className="shop-header-actions">
-            <button
-              type="button"
+            <a
               className="shop-icon"
+              href="/doors#door-search"
               aria-label={t("Поиск по каталогу")}
-              onClick={() => searchRef.current?.focus()}
             >
               <Search size={21} aria-hidden="true" />
-            </button>
+            </a>
             <button
               type="button"
               className="shop-icon"
@@ -285,7 +276,7 @@ export function Storefront() {
           </div>
         </div>
       </header>
-      <main>
+      <main id="storefront-main" tabIndex={-1}>
         <section className="shop-hero shop-wrap" aria-labelledby="hero-title">
           <div className="shop-hero-inner">
             <div className="shop-hero-copy">
@@ -330,7 +321,7 @@ export function Storefront() {
         <section className="shop-catalog shop-wrap" aria-labelledby="catalog">
           <div className="shop-catalog-heading">
             <h2 id="catalog" tabIndex={-1} ref={catalogRef}>
-              {t("Каталог")}
+              {t("Демокаталог")}
             </h2>
             <div className="shop-search">
               <Search size={20} aria-hidden="true" />
