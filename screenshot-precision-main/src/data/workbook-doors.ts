@@ -6,7 +6,6 @@ export interface DoorVariant {
   row: number;
   height: number;
   width: number;
-  price45: number;
   price50: number;
   namedWidth?: number;
   namedSize?: string;

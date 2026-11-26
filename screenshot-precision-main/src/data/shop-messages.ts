@@ -358,10 +358,10 @@ export const shopMessages: Readonly<
       "Ölçegler çeşme ýazgylary boýunça görkezilýär. Excel-de ini we beýikligi üçin «sm» belligi «mm» hökmünde düşündirildi.",
       "Dimensions follow the source entries. The Excel label “cm” was interpreted as “mm” for width and height.",
     ],
-  "Изображения сгенерированы по отделке или типу двери. Цены 45% и 50% указаны по исходной таблице в USD. Наличие в файле не указано.":
+  "Изображения сгенерированы по отделке или типу двери. Цены взяты из колонки 50% исходного прайс-листа и указаны в USD. Наличие в файле не указано.":
     [
-      "Şekiller gapynyň bezegine ýa-da görnüşine görä döredildi. 45% we 50% bahalary çeşme tablisasyndan USD-de görkezilýär. Faýlda elýeterlilik görkezilmeýär.",
-      "Images are generated from the door’s finish or type. The 45% and 50% prices are from the original table in USD. Stock was not listed.",
+      "Şekiller gapynyň bezegine ýa-da görnüşine görä döredildi. Bahalar çeşme sanawynyň 50% sütüninden alyndy we USD-de görkezilýär. Faýlda elýeterlilik görkezilmeýär.",
+      "Images are generated from the door’s finish or type. Prices are shown in USD from the 50% column of the original price list. Stock was not listed.",
     ],
   "Модель, отделка или размер": [
     "Nusga, bezeg ýa-da ölçeg",

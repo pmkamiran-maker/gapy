@@ -96,7 +96,6 @@ function DoorDetails({
                 <th scope="col">{t("Размер в названии")}</th>
                 <th scope="col">{t("Поле «Длина»")}</th>
                 <th scope="col">{t("Открывание")}</th>
-                <th scope="col">45% · USD</th>
                 <th scope="col">50% · USD</th>
               </tr>
             </thead>
@@ -117,7 +116,6 @@ function DoorDetails({
                 </td>
                 <td>{variant.listedLength ?? "—"}</td>
                 <td>{variant.opening ? t(variant.opening) : "—"}</td>
-                <td>{price.format(variant.price45)}</td>
                 <td>{price.format(variant.price50)}</td>
               </tr>
             </tbody>
@@ -233,7 +231,7 @@ export function DoorCatalog({
       </header>
       <p className="workbook-note">
         {t(
-          "Изображения сгенерированы по отделке или типу двери. Цены 45% и 50% указаны по исходной таблице в USD. Наличие в файле не указано.",
+          "Изображения сгенерированы по отделке или типу двери. Цены взяты из колонки 50% исходного прайс-листа и указаны в USD. Наличие в файле не указано.",
         )}{" "}
         {t("Цены и наличие демотоваров приведены для примера.")}
       </p>

@@ -22,7 +22,7 @@ describe("Workbook door catalog", () => {
     ]);
   });
 
-  it("filters the catalog and shows both USD columns for each variant", () => {
+  it("filters the catalog and shows only the 50% USD price for each variant", () => {
     render(<DoorCatalog onProduct={() => {}} />);
     expect(screen.getByRole("status")).toHaveTextContent(
       "Найдено позиций: 131",
@@ -57,8 +57,8 @@ describe("Workbook door catalog", () => {
       table.queryByRole("rowheader", { name: "173" }),
     ).not.toBeInTheDocument();
     expect(
-      table.getByRole("columnheader", { name: "45% · USD" }),
-    ).toBeInTheDocument();
+      table.queryByRole("columnheader", { name: "45% · USD" }),
+    ).not.toBeInTheDocument();
     expect(
       table.getByRole("columnheader", { name: "50% · USD" }),
     ).toBeInTheDocument();
@@ -67,7 +67,7 @@ describe("Workbook door catalog", () => {
     );
     expect(mismatched.getByText("860 × 2050")).toBeInTheDocument();
     expect(mismatched.getByText("Ширина расходится")).toBeInTheDocument();
-    expect(mismatched.getByText("239,42")).toBeInTheDocument();
+    expect(mismatched.queryByText("239,42")).not.toBeInTheDocument();
     expect(mismatched.getByText("247,68")).toBeInTheDocument();
   });
 });
