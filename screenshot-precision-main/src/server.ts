@@ -2,6 +2,7 @@ import "./lib/error-capture";
 
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
+import { handleOrderRequest } from "./lib/order-request-server";
 
 type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
@@ -50,6 +51,12 @@ function isH3SwallowedErrorBody(body: string): boolean {
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
+      const runtime = (request as Request & {
+        runtime?: { cloudflare?: { env?: unknown } };
+      }).runtime?.cloudflare?.env ?? env ?? (typeof process !== "undefined" ? process.env : {});
+      const orderResponse = await handleOrderRequest(request, runtime as Parameters<typeof handleOrderRequest>[1]);
+      if (orderResponse) return orderResponse;
+
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
       return await normalizeCatastrophicSsrResponse(response);

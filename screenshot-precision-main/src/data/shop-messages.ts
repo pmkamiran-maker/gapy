@@ -194,4 +194,65 @@ export const shopMessages: Readonly<
   Фортис: ["Fortis", "Fortis"],
   Бастион: ["Bastion", "Bastion"],
   Нордфикс: ["Nordfix", "Nordfix"],
+  "Оформить заявку": ["Sargyt haýyşyny doldur", "Request an order"],
+  "Заявка на заказ": ["Sargyt haýyşy", "Order request"],
+  Имя: ["Ady", "Name"],
+  Телефон: ["Telefon belgisi", "Phone"],
+  Получение: ["Almagyň usuly", "Fulfillment"],
+  Самовывоз: ["Özüň alyp gitmek", "Pickup"],
+  "Адрес доставки": ["Eltip beriljek salgy", "Delivery address"],
+  "Нужен замер": ["Ölçeg almak gerek", "I need a measurement"],
+  "Предварительный итог: {price}": [
+    "Deslapky jemi: {price}",
+    "Estimated total: {price}",
+  ],
+  "Контактные данные будут переданы магазину для обработки заявки.": [
+    "Habarlaşmak üçin maglumatlaryňyz haýyşy işlemek üçin dükana iberiler.",
+    "Your contact details will be sent to the store to process your request.",
+  ],
+  "Приём заявок пока не подключён. Расчёт можно скачать в корзине.": [
+    "Sargyt haýyşlaryny kabul etmek entek işjeň däl. Hasaby sebetden ýükläp alyp bilersiňiz.",
+    "Order requests are not available yet. You can download your estimate from the cart.",
+  ],
+  "Проверьте имя, номер телефона и адрес доставки.": [
+    "Adyňyzy, telefon belgiňizi we eltip beriljek salgyny barlaň.",
+    "Check your name, phone number, and delivery address.",
+  ],
+  "Не удалось подтвердить отправку. Попробуйте ещё раз.": [
+    "Iberilendigini tassyklap bolmady. Täzeden synanyşyň.",
+    "We could not confirm submission. Please try again.",
+  ],
+  "Отправляем…": ["Iberilýär…", "Sending…"],
+  "Отправить заявку": ["Haýyşy iber", "Send request"],
+  "Заявка отправлена": ["Haýyş iberildi", "Request sent"],
+  "Магазин свяжется с вами по указанному телефону, чтобы подтвердить заказ.": [
+    "Dükan sargydy tassyklamak üçin görkezilen telefon belgisi arkaly habarlaşar.",
+    "The store will call the number you provided to confirm your order.",
+  ],
+  "Номер заявки: {id}": ["Haýyşyň belgisi: {id}", "Request number: {id}"],
+  "К корзине": ["Sebede dolan", "Back to cart"],
+  Контакты: ["Habarlaşmak", "Contact"],
+  "Цены и наличие приведены для примера.": [
+    "Bahalar we elýeterlilik mysal hökmünde görkezilýär.",
+    "Prices and availability are for illustration.",
+  ],
+  "Пример контактов": ["Habarlaşmak üçin mysal", "Example contact details"],
+  "ул. Примерная, 1": ["Mysal köçesi, 1", "1 Example Street"],
+  "Пример условий: доставка {fee}, бесплатно от {threshold}. Монтаж и замер по согласованию.":
+    [
+      "Mysal: eltip bermek {fee}, {threshold} we ondan ýokary sargytlar üçin mugt. Gurnama we ölçeg almak ylalaşyk boýunça.",
+      "Example: delivery {fee}, free from {threshold}. Installation and measurement by arrangement.",
+    ],
+  "Тестовая заявка проверена": [
+    "Synag haýyşy barlandy",
+    "Test request validated",
+  ],
+  "Данные не отправлены в магазин.": [
+    "Maglumatlar dükana iberilmedi.",
+    "No data was sent to the store.",
+  ],
+  "Тестовый режим. Введите вымышленные имя, телефон и адрес.": [
+    "Synag tertibi. Mysal üçin at, telefon belgisini we salgyny giriziň.",
+    "Test mode. Enter a fictional name, phone number, and address.",
+  ],
 };

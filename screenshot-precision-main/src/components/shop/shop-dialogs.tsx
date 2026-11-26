@@ -18,6 +18,7 @@ import {
 import { buyAction, deliveryCost, stockLabel } from "@/lib/pricing";
 import { lineTotal, productsByIds, useShop } from "@/lib/shop-store";
 import { STORE } from "@/lib/store-config";
+import { OrderForm } from "./order-form";
 
 export type Panel = "cart" | "favorites" | "compare";
 
@@ -156,9 +157,12 @@ export function ProductDetails({
 
 function CartContents() {
   const { cart, cartTotal, removeLine, setQty } = useShop();
+  const [ordering, setOrdering] = useState(false);
   const { t, price, productText, locale } = useShopLocale();
   if (cart.length === 0)
     return <p className="shop-panel-empty">{t("Корзина пока пуста.")}</p>;
+
+  if (ordering) return <OrderForm onBack={() => setOrdering(false)} />;
 
   const delivery = deliveryCost(cartTotal);
 
@@ -272,9 +276,22 @@ function CartContents() {
           <dd>{price(cartTotal + delivery)}</dd>
         </div>
       </dl>
-      <button type="button" className="shop-button" onClick={downloadEstimate}>
-        {t("Скачать расчёт")}
-      </button>
+      <div className="shop-order-actions">
+        <button
+          type="button"
+          className="shop-button"
+          onClick={() => setOrdering(true)}
+        >
+          {t("Оформить заявку")}
+        </button>
+        <button
+          type="button"
+          className="shop-text-link"
+          onClick={downloadEstimate}
+        >
+          {t("Скачать расчёт")}
+        </button>
+      </div>
     </>
   );
 }

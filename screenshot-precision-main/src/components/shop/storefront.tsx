@@ -35,7 +35,7 @@ import {
 } from "@/lib/catalog-search";
 import { discountPercent, stockLabel } from "@/lib/pricing";
 import { useShop } from "@/lib/shop-store";
-import { FREE_DELIVERY_FROM, STORE } from "@/lib/store-config";
+import { DELIVERY_PRICE, FREE_DELIVERY_FROM, STORE } from "@/lib/store-config";
 
 import { ProductDetails, ShopPanel, type Panel } from "./shop-dialogs";
 
@@ -43,17 +43,14 @@ const SERVICES = [
   {
     icon: Truck,
     title: "Доставка",
-    detail: "Бесплатно от {price}",
   },
   {
     icon: Ruler,
     title: "Замер",
-    detail: "Бесплатно при заказе установки",
   },
   {
     icon: Wrench,
     title: "Установка",
-    detail: "Гарантия на монтаж два года",
   },
 ];
 
@@ -214,7 +211,9 @@ export function Storefront() {
             <MapPin size={15} aria-hidden="true" /> {t("Ашхабад")}
           </span>
           <div className="shop-top-settings">
-            <span className="shop-hours">{t(STORE.hours)}</span>
+            {STORE.hours && (
+              <span className="shop-hours">{t(STORE.hours)}</span>
+            )}
             <label className="shop-language">
               <span className="sr-only">{t("Язык")}</span>
               <select
@@ -326,15 +325,19 @@ export function Storefront() {
           className="shop-services shop-wrap"
           aria-label={t("Услуги магазина")}
         >
-          {SERVICES.map(({ icon: Icon, title, detail }) => (
+          {SERVICES.map(({ icon: Icon, title }) => (
             <div key={title} className="shop-service">
               <Icon size={26} strokeWidth={1.5} aria-hidden="true" />
               <div>
                 <strong>{t(title)}</strong>
-                <p>{t(detail, { price: price(FREE_DELIVERY_FROM) })}</p>
               </div>
             </div>
           ))}
+          <p className="shop-service-note">
+            {t(
+              "Условия доставки и монтажа уточняются при подтверждении заявки.",
+            )}
+          </p>
         </section>
         <section className="shop-catalog shop-wrap" aria-labelledby="catalog">
           <div className="shop-catalog-heading">
@@ -370,6 +373,11 @@ export function Storefront() {
               )}
             </div>
           </div>
+          {!STORE.verifiedCatalog && (
+            <p className="shop-catalog-note">
+              {t("Цены и наличие приведены для примера.")}
+            </p>
+          )}
           <div
             className="shop-categories"
             aria-label={t("Категории каталога")}
@@ -475,9 +483,30 @@ export function Storefront() {
           <Brand />
           <a href="#catalog">{t("Каталог")}</a>
           <a href="#services">{t("Доставка и установка")}</a>
-          <span>
-            {t("Ашхабад")} · {t(STORE.hours)}
-          </span>
+          <address className="shop-contact">
+            <strong>
+              {t(STORE.verifiedDetails ? "Контакты" : "Пример контактов")}
+            </strong>
+            <span>
+              {t("Ашхабад")}
+              {STORE.address && ` · ${t(STORE.address)}`}
+            </span>
+            {STORE.hours && <span>{t(STORE.hours)}</span>}
+            {STORE.phone &&
+              (STORE.verifiedDetails ? (
+                <a href={`tel:${STORE.phone.replace(/[^+\d]/g, "")}`}>
+                  {STORE.phone}
+                </a>
+              ) : (
+                <span>{STORE.phone}</span>
+              ))}
+            {STORE.email &&
+              (STORE.verifiedDetails ? (
+                <a href={`mailto:${STORE.email}`}>{STORE.email}</a>
+              ) : (
+                <span>{STORE.email}</span>
+              ))}
+          </address>
         </div>
       </footer>
       <ShopPanel

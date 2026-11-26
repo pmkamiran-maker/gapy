@@ -865,3 +865,68 @@
     font-size: 0.75rem;
   }
 }
+
+.shop-order,
+.shop-order fieldset,
+.shop-order label {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.shop-order {
+  gap: 0.9rem;
+}
+
+.shop-order legend {
+  margin-bottom: 0.55rem;
+  font-weight: 800;
+}
+
+.shop-order input:not([type="checkbox"]),
+.shop-order select {
+  width: 100%;
+  min-height: 42px;
+  padding: 0.4rem 0.7rem;
+  border: 1px solid var(--shop-line);
+  border-radius: 4px;
+  background: white;
+}
+
+.shop-order .shop-order-check,
+.shop-order-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.shop-order-actions {
+  flex-wrap: wrap;
+}
+.shop-order-note {
+  color: var(--shop-muted);
+  font-size: 0.875rem;
+}
+.shop-order [role="alert"] {
+  color: #8a3927;
+}
+
+.shop-service-note,
+.shop-catalog-note {
+  color: var(--shop-muted);
+  font-size: 0.875rem;
+}
+
+.shop-service-note {
+  grid-column: 1 / -1;
+  padding: 0.25rem 0.5rem 0.9rem;
+}
+
+.shop-catalog-note {
+  margin-bottom: 0.9rem;
+}
+
+.shop-contact {
+  display: grid;
+  gap: 0.25rem;
+  font-style: normal;
+}

@@ -86,11 +86,11 @@ export function ShopProvider({ children }: { children: ReactNode }) {
     const color = opts?.color ?? product.colors[0]?.name;
     const size = opts?.size ?? product.sizes?.[0];
     const key = [id, color ?? "", size ?? ""].join("|");
-    const qty = opts?.qty ?? 1;
+    const qty = Math.max(1, Math.min(99, opts?.qty ?? 1));
     setState((s) => {
       const existing = s.cart.find((l) => l.key === key);
       const cart = existing
-        ? s.cart.map((l) => (l.key === key ? { ...l, qty: l.qty + qty } : l))
+        ? s.cart.map((l) => (l.key === key ? { ...l, qty: Math.min(99, l.qty + qty) } : l))
         : [...s.cart, { key, id, qty, ...(color ? { color } : {}), ...(size ? { size } : {}) }];
       return { ...s, cart };
     });

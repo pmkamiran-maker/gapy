@@ -1,5 +1,11 @@
-import { fireEvent, render, screen, within } from "@testing-library/react";
-import { beforeEach, describe, expect, it } from "vitest";
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from "@testing-library/react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { Storefront } from "@/components/shop/storefront";
 import { ShopLocaleProvider } from "@/lib/shop-locale";
@@ -17,6 +23,7 @@ function renderStorefront() {
 
 describe("Storefront", () => {
   beforeEach(() => localStorage.clear());
+  afterEach(() => vi.unstubAllGlobals());
 
   it("filters the catalog and persists the selected variant and quantity", () => {
     const { unmount } = renderStorefront();
@@ -133,5 +140,99 @@ describe("Storefront", () => {
     expect(screen.getByRole("dialog", { name: "Корзина" })).toHaveTextContent(
       "Кремовый",
     );
+  });
+
+  it.each([
+    {
+      locale: "ru",
+      cart: "Корзина",
+      checkout: "Оформить заявку",
+      name: "Имя",
+      phone: "Телефон",
+      fulfillment: "Получение",
+      address: "Адрес доставки",
+      measure: "Нужен замер",
+      submit: "Отправить заявку",
+      result: "Тестовая заявка проверена",
+    },
+    {
+      locale: "tk",
+      cart: "Sebet",
+      checkout: "Sargyt haýyşyny doldur",
+      name: "Ady",
+      phone: "Telefon belgisi",
+      fulfillment: "Almagyň usuly",
+      address: "Eltip beriljek salgy",
+      measure: "Ölçeg almak gerek",
+      submit: "Haýyşy iber",
+      result: "Synag haýyşy barlandy",
+    },
+    {
+      locale: "en",
+      cart: "Cart",
+      checkout: "Request an order",
+      name: "Name",
+      phone: "Phone",
+      fulfillment: "Fulfillment",
+      address: "Delivery address",
+      measure: "I need a measurement",
+      submit: "Send request",
+      result: "Test request validated",
+    },
+  ])("completes a demo pickup request in $locale", async (labels) => {
+    localStorage.setItem("portal-language", labels.locale);
+    localStorage.setItem(
+      "portal-shop-v1",
+      JSON.stringify({
+        cart: [
+          {
+            key: "p1|Кремовый|800x2000",
+            id: "p1",
+            color: "Кремовый",
+            size: "800x2000",
+            qty: 2,
+          },
+        ],
+      }),
+    );
+    const fetchMock = vi
+      .fn<typeof fetch>()
+      .mockImplementation(async (_input, options) => {
+        if (options?.method !== "POST")
+          return Response.json({ available: true, demo: true });
+        const body = JSON.parse(String(options.body));
+        return Response.json({ id: body.id, demo: true });
+      });
+    vi.stubGlobal("fetch", fetchMock);
+
+    renderStorefront();
+    fireEvent.click(screen.getByRole("button", { name: labels.cart }));
+    const dialog = within(screen.getByRole("dialog", { name: labels.cart }));
+    fireEvent.click(dialog.getByRole("button", { name: labels.checkout }));
+    expect(
+      dialog.getByRole("textbox", { name: labels.address }),
+    ).toBeRequired();
+    fireEvent.change(
+      dialog.getByRole("combobox", { name: labels.fulfillment }),
+      { target: { value: "pickup" } },
+    );
+    expect(dialog.queryByRole("textbox", { name: labels.address })).toBeNull();
+    fireEvent.change(dialog.getByRole("textbox", { name: labels.name }), {
+      target: { value: "Test Customer" },
+    });
+    fireEvent.change(dialog.getByRole("textbox", { name: labels.phone }), {
+      target: { value: "+993 00 000000" },
+    });
+    fireEvent.click(dialog.getByRole("checkbox", { name: labels.measure }));
+    const submit = dialog.getByRole("button", { name: labels.submit });
+    await waitFor(() => expect(submit).toBeEnabled());
+    fireEvent.click(submit);
+    expect(await dialog.findByText(labels.result)).toBeInTheDocument();
+    const [, options] = fetchMock.mock.calls[1] ?? [];
+    expect(JSON.parse(String(options?.body))).toMatchObject({
+      locale: labels.locale,
+      contact: { fulfillment: "pickup", measure: true },
+      items: [{ id: "p1", qty: 2, color: "Кремовый", size: "800x2000" }],
+    });
   });
 });
