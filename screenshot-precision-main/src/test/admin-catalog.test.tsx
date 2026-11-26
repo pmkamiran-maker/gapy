@@ -72,12 +72,25 @@ describe("Catalog administration", () => {
     fireEvent.change(dialog.getByLabelText("Цена, USD"), {
       target: { value: "99.50" },
     });
+    fireEvent.change(dialog.getByLabelText("Наличие"), {
+      target: { value: "order" },
+    });
+    fireEvent.change(dialog.getByLabelText("Срок поставки, дней"), {
+      target: { value: "14" },
+    });
     fireEvent.click(dialog.getByRole("button", { name: "Сохранить" }));
     expect(await screen.findByText("Позиция сохранена.")).toBeInTheDocument();
     expect(insert).toHaveBeenCalledWith({
       id: expect.stringMatching(/^item-/),
       hidden: false,
-      patch: { name: "Новая дверь", detail: "", price: 99.5, kind: "wood" },
+      patch: {
+        name: "Новая дверь",
+        detail: "",
+        price: 99.5,
+        kind: "wood",
+        availability: "order",
+        leadTimeDays: 14,
+      },
     });
 
     fireEvent.change(screen.getByRole("searchbox"), {
@@ -124,5 +137,50 @@ describe("Catalog administration", () => {
     expect(
       screen.queryByRole("button", { name: /Строка Excel 11$/ }),
     ).not.toBeInTheDocument();
+  });
+  it("shows availability and lead time only on the matching Excel variant", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValue(
+          Response.json([
+            {
+              id: "excel-175",
+              hidden: false,
+              patch: { availability: "order", leadTimeDays: 14 },
+            },
+          ]),
+        ),
+    );
+    render(
+      <ShopProvider liveCatalog>
+        <DoorCatalog onProduct={() => {}} />
+      </ShopProvider>,
+    );
+    expect(await screen.findByText("Найдено позиций: 131")).toBeInTheDocument();
+
+    fireEvent.change(screen.getByRole("searchbox"), {
+      target: { value: "Y10" },
+    });
+    const right = screen.getByRole("button", { name: /Строка Excel 175$/ });
+    const left = screen.getByRole("button", { name: /Строка Excel 173$/ });
+    expect(
+      within(right.closest("article")!).getByText("Под заказ"),
+    ).toBeInTheDocument();
+    expect(
+      within(right.closest("article")!).getByText("Срок поставки: 14 дней"),
+    ).toBeInTheDocument();
+    expect(
+      within(left.closest("article")!).getByText("Уточнить наличие"),
+    ).toBeInTheDocument();
+    expect(
+      within(left.closest("article")!).queryByText(/Срок поставки/),
+    ).not.toBeInTheDocument();
+
+    fireEvent.click(right);
+    expect(
+      within(screen.getByRole("dialog")).getByText("Срок поставки: 14 дней"),
+    ).toBeInTheDocument();
   });
 });

@@ -5,10 +5,13 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { paginate } from "@/lib/catalog-search";
 import {
   applyCatalogChanges,
+  availabilityLabel,
+  CATALOG_AVAILABILITY,
   CATALOG_CHANGES_TABLE,
   CATALOG_KINDS,
   catalogPatchSchema,
   readCatalogChanges,
+  type CatalogAvailability,
   type CatalogChange,
   type CatalogKind,
   type CatalogPatch,
@@ -37,6 +40,8 @@ interface AdminItem {
   image: string;
   kind?: CatalogKind;
   row?: number;
+  availability?: CatalogAvailability;
+  leadTimeDays?: number;
   width?: number;
   height?: number;
   opening?: string;
@@ -89,6 +94,12 @@ function CatalogEditor({
       const width = number("width");
       const height = number("height");
       const opening = value("opening") as CatalogPatch["opening"];
+      const availability = value("availability") as CatalogAvailability;
+      const leadTimeDays = number("leadTimeDays");
+      if (availability !== (item?.availability ?? "unknown"))
+        patch.availability = availability;
+      if (leadTimeDays !== (item?.leadTimeDays ?? null))
+        patch.leadTimeDays = leadTimeDays;
       if (!item || kind !== item.kind) patch.kind = kind;
       if (width !== (item?.width ?? null)) patch.width = width;
       if (height !== (item?.height ?? null)) patch.height = height;
@@ -214,6 +225,29 @@ function CatalogEditor({
                       <option value="Правые">{t("Правые")}</option>
                     </select>
                   </label>
+                  <label>
+                    {t("Наличие")}
+                    <select
+                      name="availability"
+                      defaultValue={item?.availability ?? "unknown"}
+                    >
+                      {CATALOG_AVAILABILITY.map((value) => (
+                        <option key={value} value={value}>
+                          {t(availabilityLabel(value))}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label>
+                    {t("Срок поставки, дней")}
+                    <input
+                      name="leadTimeDays"
+                      type="number"
+                      min="0"
+                      step="1"
+                      defaultValue={item?.leadTimeDays}
+                    />
+                  </label>
                 </>
               )}
             </div>
@@ -305,6 +339,11 @@ function CatalogManagement({ auth }: { auth: ReadyAuth }) {
   );
   const { items, pages, current } = paginate(matching, page);
   const price = Intl.NumberFormat(locale, { maximumFractionDigits: 2 });
+  const duration = Intl.NumberFormat(locale, {
+    style: "unit",
+    unit: "day",
+    unitDisplay: "long",
+  });
 
   async function save(change: CatalogChange, visibilityOnly = false) {
     if (busy) return;
@@ -399,6 +438,7 @@ function CatalogManagement({ auth }: { auth: ReadyAuth }) {
               <th scope="col">{t("Название")}</th>
               <th scope="col">{t("Источник товаров")}</th>
               <th scope="col">{t("Цена")}</th>
+              <th scope="col">{t("Наличие")}</th>
               <th scope="col">{t("В каталоге")}</th>
               <th scope="col">{t("Действия")}</th>
             </tr>
@@ -413,7 +453,15 @@ function CatalogManagement({ auth }: { auth: ReadyAuth }) {
                   <th scope="row">
                     {t(item.name)}
                     <small>
-                      {item.row ? `${t("Строка Excel")} ${item.row}` : ""}
+                      {[
+                        item.row && `${t("Строка Excel")} ${item.row}`,
+                        item.width &&
+                          item.height &&
+                          `${item.width} × ${item.height} ${t("мм")}`,
+                        item.opening && t(item.opening),
+                      ]
+                        .filter(Boolean)
+                        .join(" · ")}
                     </small>
                   </th>
                   <td>
@@ -427,6 +475,18 @@ function CatalogManagement({ auth }: { auth: ReadyAuth }) {
                   </td>
                   <td>
                     {price.format(item.price)} {demo ? "TMT" : "USD"}
+                  </td>
+                  <td>
+                    {t(
+                      availabilityLabel(
+                        item.stock ?? item.availability ?? "unknown",
+                      ),
+                    )}
+                    {item.leadTimeDays !== undefined && (
+                      <span className="catalog-lead-time">
+                        {duration.format(item.leadTimeDays)}
+                      </span>
+                    )}
                   </td>
                   <td>{t(hidden ? "Скрыта" : "Показана")}</td>
                   <td>

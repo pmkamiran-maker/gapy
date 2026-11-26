@@ -14,7 +14,11 @@ import {
   DialogDescription,
   DialogTitle,
 } from "@/components/ui/dialog";
-import type { CatalogKind, CatalogPosition } from "@/lib/live-catalog";
+import {
+  availabilityLabel,
+  type CatalogKind,
+  type CatalogPosition,
+} from "@/lib/live-catalog";
 import { useShop } from "@/lib/shop-store";
 import {
   SORT_OPTIONS,
@@ -38,6 +42,29 @@ const groups: Record<CatalogKind, string> = {
   hardware: "Фурнитура",
   trim: "Погонаж",
 };
+
+function PositionAvailability({ item }: { item: CatalogPosition }) {
+  const { t, locale } = useShopLocale();
+  const days = item.leadTimeDays;
+  return (
+    <div className="catalog-availability">
+      <span className="shop-stock" data-stock={item.availability}>
+        {t(availabilityLabel(item.availability))}
+      </span>
+      {days !== undefined && (
+        <span className="catalog-lead-time">
+          {t("Срок поставки: {duration}", {
+            duration: new Intl.NumberFormat(locale, {
+              style: "unit",
+              unit: "day",
+              unitDisplay: "long",
+            }).format(days),
+          })}
+        </span>
+      )}
+    </div>
+  );
+}
 
 function DoorDetails({
   item,
@@ -69,6 +96,7 @@ function DoorDetails({
             <DialogDescription className="shop-dialog-description">
               {t(item.detail)}
             </DialogDescription>
+            <PositionAvailability item={item} />
             {item.image.startsWith("/catalog-doors/") && (
               <p>{t("Иллюстрация по описанию")}</p>
             )}
@@ -223,7 +251,7 @@ export function DoorCatalog({
       </header>
       <p className="workbook-note">
         {t(
-          "Изображения сгенерированы по отделке или типу двери. Цены взяты из колонки 50% исходного прайс-листа и указаны в USD. Наличие в файле не указано.",
+          "Изображения сгенерированы по отделке или типу двери. Цены взяты из колонки 50% исходного прайс-листа и указаны в USD.",
         )}{" "}
         {t("Цены и наличие демотоваров приведены для примера.")}
       </p>
@@ -369,6 +397,7 @@ export function DoorCatalog({
                         {item.opening && ` · ${t(item.opening)}`}
                       </p>
                     )}
+                    <PositionAvailability item={item} />
                     <button
                       type="button"
                       className="shop-button"

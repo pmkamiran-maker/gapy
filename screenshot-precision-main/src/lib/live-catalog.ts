@@ -3,12 +3,20 @@ import { z } from "zod";
 import fallbackImage from "@/assets/door-white.jpg";
 import { PRODUCTS, type Product } from "@/data/catalog";
 import { workbookDoorImage, workbookDoors } from "@/data/workbook-doors";
+import { stockLabel } from "@/lib/pricing";
 import type { PublicSupabaseConfig } from "@/lib/supabase-config";
 
 export const CATALOG_PATH = "/api/catalog";
 export const CATALOG_ADMIN_TABLE = "gapy_catalog_admins";
 export const CATALOG_CHANGES_TABLE = "gapy_catalog_changes";
 export const CATALOG_KINDS = ["wood", "steel", "hardware", "trim"] as const;
+
+export const CATALOG_AVAILABILITY = ["unknown", "in", "order", "out"] as const;
+export type CatalogAvailability = (typeof CATALOG_AVAILABILITY)[number];
+
+export function availabilityLabel(value: CatalogAvailability) {
+  return value === "unknown" ? "Уточнить наличие" : stockLabel(value);
+}
 
 export const catalogPatchSchema = z.strictObject({
   name: z.string().trim().min(1).max(180).optional(),
@@ -32,6 +40,8 @@ export const catalogPatchSchema = z.strictObject({
   height: z.number().int().min(1).max(100000).nullish(),
   opening: z.enum(["Левые", "Правые", ""]).optional(),
   stock: z.enum(["in", "order", "out"]).optional(),
+  availability: z.enum(CATALOG_AVAILABILITY).optional(),
+  leadTimeDays: z.number().int().nonnegative().nullish(),
 });
 
 const catalogChangeSchema = z
@@ -60,6 +70,8 @@ export interface CatalogPosition {
   kind: CatalogKind;
   image: string;
   price: number;
+  availability: CatalogAvailability;
+  leadTimeDays?: number;
   row?: number;
   width?: number;
   height?: number;
@@ -79,6 +91,7 @@ const imported: CatalogPosition[] = workbookDoors
       kind: door.kind,
       image: workbookDoorImage(door),
       price: price50,
+      availability: "unknown" as const,
     })),
   )
   .sort((a, b) => (a.row ?? 0) - (b.row ?? 0));
@@ -135,6 +148,10 @@ export function applyCatalogChanges(
         price: patch.price ?? item.price,
         image: patch.image ?? item.image,
         opening: patch.opening ?? item.opening ?? "",
+        availability: patch.availability ?? item.availability,
+        ...(patch.leadTimeDays != null
+          ? { leadTimeDays: patch.leadTimeDays }
+          : {}),
         ...(nextWidth !== null && nextWidth !== undefined
           ? { width: nextWidth }
           : {}),
@@ -161,6 +178,10 @@ export function applyCatalogChanges(
       price: patch.price,
       image: patch.image ?? fallbackImage,
       opening: patch.opening ?? "",
+      availability: patch.availability ?? "unknown",
+      ...(patch.leadTimeDays != null
+        ? { leadTimeDays: patch.leadTimeDays }
+        : {}),
       ...(patch.width != null ? { width: patch.width } : {}),
       ...(patch.height != null ? { height: patch.height } : {}),
     });

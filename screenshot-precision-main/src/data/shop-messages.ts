@@ -358,10 +358,10 @@ export const shopMessages: Readonly<
       "Ölçegler çeşme ýazgylary boýunça görkezilýär. Excel-de ini we beýikligi üçin «sm» belligi «mm» hökmünde düşündirildi.",
       "Dimensions follow the source entries. The Excel label “cm” was interpreted as “mm” for width and height.",
     ],
-  "Изображения сгенерированы по отделке или типу двери. Цены взяты из колонки 50% исходного прайс-листа и указаны в USD. Наличие в файле не указано.":
+  "Изображения сгенерированы по отделке или типу двери. Цены взяты из колонки 50% исходного прайс-листа и указаны в USD.":
     [
-      "Şekiller gapynyň bezegine ýa-da görnüşine görä döredildi. Bahalar çeşme sanawynyň 50% sütüninden alyndy we USD-de görkezilýär. Faýlda elýeterlilik görkezilmeýär.",
-      "Images are generated from the door’s finish or type. Prices are shown in USD from the 50% column of the original price list. Stock was not listed.",
+      "Şekiller gapynyň bezegine ýa-da görnüşine görä döredildi. Bahalar çeşme sanawynyň 50% sütüninden alyndy we USD-de görkezilýär.",
+      "Images are generated from the door’s finish or type. Prices are shown in USD from the 50% column of the original price list.",
     ],
   "Модель, отделка или размер": [
     "Nusga, bezeg ýa-da ölçeg",
@@ -470,4 +470,10 @@ export const shopMessages: Readonly<
     "The catalog is temporarily unavailable. Refresh the page.",
   ],
   "Основной каталог": ["Esasy katalog", "Main catalog"],
+  "Уточнить наличие": ["Elýeterliligini anyklaň", "Check availability"],
+  "Срок поставки, дней": ["Eltip beriş möhleti, gün", "Lead time, days"],
+  "Срок поставки: {duration}": [
+    "Eltip beriş möhleti: {duration}",
+    "Lead time: {duration}",
+  ],
 };

@@ -435,7 +435,8 @@
 .shop-stock[data-stock="order"] {
   color: var(--shop-brass);
 }
-.shop-stock[data-stock="out"] {
+.shop-stock[data-stock="out"],
+.shop-stock[data-stock="unknown"] {
   color: var(--shop-muted);
 }
 
@@ -1124,4 +1125,15 @@
   border: 1px solid var(--shop-line);
   border-radius: 4px;
   background: white;
+}
+
+.catalog-availability {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.catalog-lead-time {
+  display: block;
+  color: var(--shop-muted);
+  font-size: 0.875rem;
 }
