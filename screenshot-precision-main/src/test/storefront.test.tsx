@@ -7,6 +7,7 @@ import {
 } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import { DoorCatalog } from "@/components/shop/door-catalog";
 import { Storefront } from "@/components/shop/storefront";
 import { ShopLocaleProvider } from "@/lib/shop-locale";
 import { ShopProvider } from "@/lib/shop-store";
@@ -15,7 +16,9 @@ function renderStorefront() {
   return render(
     <ShopLocaleProvider>
       <ShopProvider>
-        <Storefront />
+        <Storefront
+          catalog={(openProduct) => <DoorCatalog onProduct={openProduct} />}
+        />
       </ShopProvider>
     </ShopLocaleProvider>,
   );
@@ -28,11 +31,27 @@ describe("Storefront", () => {
   it("filters the catalog and persists the selected variant and quantity", () => {
     const { unmount } = renderStorefront();
 
-    fireEvent.click(screen.getByRole("button", { name: "Межкомнатные двери" }));
+    expect(screen.getByRole("status")).toHaveTextContent(
+      "Найдено позиций: 131",
+    );
+    fireEvent.change(
+      screen.getByRole("combobox", { name: "Источник товаров" }),
+      {
+        target: { value: "demo" },
+      },
+    );
+    expect(screen.getByRole("status")).toHaveTextContent("Найдено позиций: 31");
+    fireEvent.change(
+      screen.getByRole("combobox", { name: "Категории каталога" }),
+      {
+        target: { value: "interior" },
+      },
+    );
     fireEvent.change(screen.getByRole("searchbox"), {
       target: { value: "Fjord 01" },
     });
-    expect(screen.getByRole("status")).toHaveTextContent("Найдено товаров: 1");
+    expect(screen.getByRole("status")).toHaveTextContent("Найдено позиций: 1");
+    expect(screen.getByText(/Демо · Nordwood/)).toBeInTheDocument();
     fireEvent.click(
       screen.getByRole("button", { name: "Fjord 01 эмаль белая" }),
     );
@@ -104,7 +123,7 @@ describe("Storefront", () => {
     fireEvent.change(screen.getByRole("searchbox"), {
       target: { value: "white enamel" },
     });
-    expect(screen.getByRole("status")).toHaveTextContent("Products found: 1");
+    expect(screen.getByRole("status")).toHaveTextContent("Items found: 1");
     fireEvent.click(
       screen.getByRole("button", { name: "Fjord 01 white enamel" }),
     );
@@ -121,7 +140,7 @@ describe("Storefront", () => {
     });
     expect(document.documentElement.lang).toBe("tk");
     expect(
-      screen.getByRole("heading", { name: "Öýüňiz üçin gapylar" }),
+      screen.getByRole("heading", { name: "Gapy we furnitura katalogy" }),
     ).toBeInTheDocument();
     unmount();
 

@@ -402,4 +402,22 @@ export const shopMessages: Readonly<
     "Items found: {count}",
   ],
   мм: ["mm", "mm"],
+  "Портал, на главную": ["Portal, baş sahypa", "Portal, home"],
+  "Двери из прайс-листа, фурнитура и демотовары.": [
+    "Baha sanawyndaky gapylar, furnitura we nusga harytlary.",
+    "Doors from the price list, hardware, and demo products.",
+  ],
+  Демо: ["Synag", "Demo"],
+  Демотовары: ["Synag harytlary", "Demo products"],
+  "Каталог дверей и фурнитуры": [
+    "Gapy we furnitura katalogy",
+    "Doors & hardware catalog",
+  ],
+  "Все категории": ["Ähli bölümler", "All categories"],
+  "Источник товаров": ["Harytlaryň çeşmesi", "Product source"],
+  "Из прайс-листа": ["Baha sanawyndan", "From the price list"],
+  "Цены и наличие демотоваров приведены для примера.": [
+    "Synag harytlarynyň bahalary we elýeterliligi mysal hökmünde görkezilýär.",
+    "Demo prices and stock are for illustration.",
+  ],
 };

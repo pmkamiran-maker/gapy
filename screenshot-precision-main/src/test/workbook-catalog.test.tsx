@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
-import { WorkbookCatalog } from "@/components/shop/workbook-catalog";
+import { DoorCatalog } from "@/components/shop/door-catalog";
 import { workbookDoors } from "@/data/workbook-doors";
 
 describe("Workbook door catalog", () => {
@@ -23,7 +23,16 @@ describe("Workbook door catalog", () => {
   });
 
   it("filters the catalog and shows both USD columns for each variant", () => {
-    render(<WorkbookCatalog />);
+    render(<DoorCatalog onProduct={() => {}} />);
+    expect(screen.getByRole("status")).toHaveTextContent(
+      "Найдено позиций: 131",
+    );
+    fireEvent.change(
+      screen.getByRole("combobox", { name: "Источник товаров" }),
+      {
+        target: { value: "priceList" },
+      },
+    );
     expect(screen.getByRole("status")).toHaveTextContent(
       "Найдено позиций: 100",
     );
