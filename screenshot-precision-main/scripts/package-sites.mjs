@@ -9,6 +9,7 @@ const mime = {
   ".jpg": "image/jpeg",
   ".js": "text/javascript; charset=utf-8",
   ".txt": "text/plain; charset=utf-8",
+  ".webp": "image/webp",
 };
 
 await rm(output, { recursive: true, force: true });

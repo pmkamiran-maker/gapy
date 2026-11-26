@@ -1,0 +1,1336 @@
+[
+  {
+    "id": "door-11",
+    "model": "011-Зелёный кристалл",
+    "detail": "Техно-дерево №3",
+    "kind": "wood",
+    "asset": "techno-wood",
+    "variants": [
+      {
+        "row": 11,
+        "height": 2000,
+        "width": 800,
+        "price45": 74.72,
+        "price50": 77.29,
+        "namedSize": "2040×860×100"
+      },
+      {
+        "row": 13,
+        "height": 2000,
+        "width": 800,
+        "price45": 74.72,
+        "price50": 77.29,
+        "namedSize": "2040×860×120"
+      }
+    ]
+  },
+  {
+    "id": "door-15",
+    "model": "056-Зелёный кристалл",
+    "detail": "Слоновая кость",
+    "kind": "wood",
+    "asset": "ivory",
+    "variants": [
+      {
+        "row": 15,
+        "height": 2000,
+        "width": 800,
+        "price45": 74.72,
+        "price50": 77.29,
+        "namedSize": "2040×860×100"
+      },
+      {
+        "row": 17,
+        "height": 2000,
+        "width": 800,
+        "price45": 74.72,
+        "price50": 77.29,
+        "namedSize": "2040×860×120"
+      }
+    ]
+  },
+  {
+    "id": "door-19",
+    "model": "056-Зелёный кристалл",
+    "detail": "Серо-бежевый",
+    "kind": "wood",
+    "asset": "greige",
+    "variants": [
+      {
+        "row": 19,
+        "height": 2000,
+        "width": 800,
+        "price45": 74.72,
+        "price50": 77.29,
+        "namedSize": "2040×860×100"
+      },
+      {
+        "row": 21,
+        "height": 2000,
+        "width": 800,
+        "price45": 74.72,
+        "price50": 77.29,
+        "namedSize": "2040×860×120"
+      }
+    ]
+  },
+  {
+    "id": "door-23",
+    "model": "D3066",
+    "detail": "Орех Рейган №3",
+    "kind": "wood",
+    "asset": "reagan-walnut",
+    "variants": [
+      {
+        "row": 23,
+        "height": 2000,
+        "width": 800,
+        "price45": 72.44,
+        "price50": 74.94,
+        "namedSize": "2040×860×100"
+      },
+      {
+        "row": 25,
+        "height": 2000,
+        "width": 800,
+        "price45": 72.44,
+        "price50": 74.94,
+        "namedSize": "2040×860×120"
+      }
+    ]
+  },
+  {
+    "id": "door-27",
+    "model": "D3071",
+    "detail": "Серо-бежевый",
+    "kind": "wood",
+    "asset": "greige",
+    "variants": [
+      {
+        "row": 27,
+        "height": 2000,
+        "width": 800,
+        "price45": 72.44,
+        "price50": 74.94,
+        "namedSize": "2040×860×100"
+      },
+      {
+        "row": 29,
+        "height": 2000,
+        "width": 800,
+        "price45": 72.44,
+        "price50": 74.94,
+        "namedSize": "2040×860×120"
+      }
+    ]
+  },
+  {
+    "id": "door-31",
+    "model": "Q007-Зелёный кристалл",
+    "detail": "Техно-дерево №3",
+    "kind": "wood",
+    "asset": "techno-wood",
+    "variants": [
+      {
+        "row": 31,
+        "height": 2000,
+        "width": 800,
+        "price45": 72.44,
+        "price50": 74.94,
+        "namedSize": "2040×860×120"
+      },
+      {
+        "row": 33,
+        "height": 2000,
+        "width": 800,
+        "price45": 72.44,
+        "price50": 74.94,
+        "namedSize": "2040×860×100"
+      }
+    ]
+  },
+  {
+    "id": "door-35",
+    "model": "Зел. Кристалл",
+    "detail": "Светло-серый",
+    "kind": "wood",
+    "asset": "light-gray",
+    "variants": [
+      {
+        "row": 35,
+        "height": 2000,
+        "width": 800,
+        "price45": 72.44,
+        "price50": 74.94,
+        "namedSize": "2040×860×100"
+      },
+      {
+        "row": 37,
+        "height": 2000,
+        "width": 800,
+        "price45": 72.44,
+        "price50": 74.94,
+        "namedSize": "2040×860×120"
+      }
+    ]
+  },
+  {
+    "id": "door-39",
+    "model": "Три квадрата",
+    "detail": "Слоновая кость",
+    "kind": "wood",
+    "asset": "three-squares",
+    "variants": [
+      {
+        "row": 39,
+        "height": 2000,
+        "width": 800,
+        "price45": 74.72,
+        "price50": 77.29,
+        "namedSize": "2040×860×100"
+      },
+      {
+        "row": 41,
+        "height": 2000,
+        "width": 800,
+        "price45": 74.72,
+        "price50": 77.29,
+        "namedSize": "2040×860×120"
+      }
+    ]
+  },
+  {
+    "id": "door-43",
+    "model": "Вставное стекло",
+    "detail": "Слоновая кость",
+    "kind": "wood",
+    "asset": "glass-insert",
+    "variants": [
+      {
+        "row": 43,
+        "height": 2000,
+        "width": 800,
+        "price45": 114.68,
+        "price50": 118.63,
+        "namedSize": "2040×860×100"
+      },
+      {
+        "row": 45,
+        "height": 2000,
+        "width": 800,
+        "price45": 114.68,
+        "price50": 118.63,
+        "namedSize": "2040×860×120"
+      }
+    ]
+  },
+  {
+    "id": "door-47",
+    "model": "HY38-Зелёный кристалл",
+    "detail": "Орех эмаль №2",
+    "kind": "wood",
+    "asset": "walnut-enamel",
+    "variants": [
+      {
+        "row": 47,
+        "height": 2000,
+        "width": 800,
+        "price45": 72.44,
+        "price50": 74.94,
+        "namedSize": "2040×860×100"
+      },
+      {
+        "row": 49,
+        "height": 2000,
+        "width": 800,
+        "price45": 72.44,
+        "price50": 74.94,
+        "namedSize": "2040×860×120"
+      }
+    ]
+  },
+  {
+    "id": "door-51",
+    "model": "C2003-Зелёный кристалл",
+    "detail": "Дуб Эггер",
+    "kind": "wood",
+    "asset": "egger-oak",
+    "variants": [
+      {
+        "row": 51,
+        "height": 2000,
+        "width": 800,
+        "price45": 72.44,
+        "price50": 74.94,
+        "namedSize": "2040×860×100"
+      },
+      {
+        "row": 53,
+        "height": 2000,
+        "width": 800,
+        "price45": 72.44,
+        "price50": 74.94,
+        "namedSize": "2040×860×120"
+      }
+    ]
+  },
+  {
+    "id": "door-55",
+    "model": "GM701",
+    "detail": "Одностворчатая",
+    "kind": "steel",
+    "asset": "steel-single",
+    "variants": [
+      {
+        "row": 55,
+        "height": 2050,
+        "width": 860,
+        "price45": 104.47,
+        "price50": 108.08,
+        "namedWidth": 860,
+        "opening": "Правые",
+        "listedLength": 70
+      },
+      {
+        "row": 57,
+        "height": 2050,
+        "width": 860,
+        "price45": 104.47,
+        "price50": 108.08,
+        "namedWidth": 860,
+        "opening": "Левые",
+        "listedLength": 70
+      },
+      {
+        "row": 59,
+        "height": 2050,
+        "width": 960,
+        "price45": 104.47,
+        "price50": 108.08,
+        "namedWidth": 960,
+        "opening": "Левые",
+        "listedLength": 70
+      },
+      {
+        "row": 207,
+        "height": 2050,
+        "width": 960,
+        "price45": 104.47,
+        "price50": 108.08,
+        "namedWidth": 960,
+        "opening": "Правые",
+        "listedLength": 70
+      }
+    ]
+  },
+  {
+    "id": "door-61",
+    "model": "GM701",
+    "detail": "Полуторная (глухая)",
+    "kind": "steel",
+    "asset": "steel-fixed",
+    "variants": [
+      {
+        "row": 61,
+        "height": 2050,
+        "width": 1200,
+        "price45": 148.01,
+        "price50": 153.11,
+        "namedWidth": 1200,
+        "opening": "Правые",
+        "listedLength": 70
+      },
+      {
+        "row": 63,
+        "height": 2050,
+        "width": 1200,
+        "price45": 148.01,
+        "price50": 153.11,
+        "namedWidth": 1200,
+        "opening": "Левые",
+        "listedLength": 70
+      }
+    ]
+  },
+  {
+    "id": "door-65",
+    "model": "GM702",
+    "detail": "Одностворчатая",
+    "kind": "steel",
+    "asset": "steel-single",
+    "variants": [
+      {
+        "row": 65,
+        "height": 2050,
+        "width": 860,
+        "price45": 93.59,
+        "price50": 96.82,
+        "namedWidth": 860,
+        "opening": "Правые",
+        "listedLength": 70
+      },
+      {
+        "row": 67,
+        "height": 2050,
+        "width": 860,
+        "price45": 93.59,
+        "price50": 96.82,
+        "namedWidth": 860,
+        "opening": "Левые",
+        "listedLength": 70
+      },
+      {
+        "row": 69,
+        "height": 2050,
+        "width": 960,
+        "price45": 93.59,
+        "price50": 96.82,
+        "namedWidth": 960,
+        "opening": "Правые",
+        "listedLength": 70
+      },
+      {
+        "row": 71,
+        "height": 2050,
+        "width": 960,
+        "price45": 93.59,
+        "price50": 96.82,
+        "namedWidth": 960,
+        "opening": "Левые",
+        "listedLength": 70
+      }
+    ]
+  },
+  {
+    "id": "door-73",
+    "model": "GM702",
+    "detail": "Полуторная (глухая)",
+    "kind": "steel",
+    "asset": "steel-fixed",
+    "variants": [
+      {
+        "row": 73,
+        "height": 2050,
+        "width": 1200,
+        "price45": 137.12,
+        "price50": 141.85,
+        "namedWidth": 1200,
+        "opening": "Правые",
+        "listedLength": 70
+      },
+      {
+        "row": 75,
+        "height": 2050,
+        "width": 1200,
+        "price45": 137.12,
+        "price50": 141.85,
+        "namedWidth": 1200,
+        "opening": "Левые",
+        "listedLength": 70
+      }
+    ]
+  },
+  {
+    "id": "door-77",
+    "model": "GM703",
+    "detail": "Одностворчатая",
+    "kind": "steel",
+    "asset": "steel-single",
+    "variants": [
+      {
+        "row": 77,
+        "height": 2050,
+        "width": 960,
+        "price45": 93.59,
+        "price50": 96.82,
+        "namedWidth": 960,
+        "opening": "Левые",
+        "listedLength": 70
+      },
+      {
+        "row": 79,
+        "height": 2050,
+        "width": 960,
+        "price45": 93.59,
+        "price50": 96.82,
+        "namedWidth": 960,
+        "opening": "Правые",
+        "listedLength": 70
+      },
+      {
+        "row": 81,
+        "height": 2050,
+        "width": 860,
+        "price45": 93.59,
+        "price50": 96.82,
+        "namedWidth": 860,
+        "opening": "Правые",
+        "listedLength": 70
+      },
+      {
+        "row": 209,
+        "height": 2050,
+        "width": 860,
+        "price45": 93.59,
+        "price50": 96.82,
+        "namedWidth": 860,
+        "opening": "Левые",
+        "listedLength": 70
+      }
+    ]
+  },
+  {
+    "id": "door-83",
+    "model": "GM703",
+    "detail": "Полуторная (в тон)",
+    "kind": "steel",
+    "asset": "steel-matching",
+    "variants": [
+      {
+        "row": 83,
+        "height": 2050,
+        "width": 1200,
+        "price45": 137.12,
+        "price50": 141.85,
+        "namedWidth": 1200,
+        "opening": "Правые",
+        "listedLength": 70
+      },
+      {
+        "row": 85,
+        "height": 2050,
+        "width": 1200,
+        "price45": 137.12,
+        "price50": 141.85,
+        "namedWidth": 1200,
+        "opening": "Левые",
+        "listedLength": 70
+      }
+    ]
+  },
+  {
+    "id": "door-87",
+    "model": "№117",
+    "detail": "Одностворчатая",
+    "kind": "steel",
+    "asset": "steel-single",
+    "variants": [
+      {
+        "row": 87,
+        "height": 2050,
+        "width": 860,
+        "price45": 185.01,
+        "price50": 191.39,
+        "namedWidth": 860,
+        "opening": "Правые",
+        "listedLength": 95
+      },
+      {
+        "row": 89,
+        "height": 2050,
+        "width": 860,
+        "price45": 185.01,
+        "price50": 191.39,
+        "namedWidth": 860,
+        "opening": "Левые",
+        "listedLength": 95
+      },
+      {
+        "row": 91,
+        "height": 2050,
+        "width": 960,
+        "price45": 185.01,
+        "price50": 191.39,
+        "namedWidth": 960,
+        "opening": "Правые",
+        "listedLength": 95
+      },
+      {
+        "row": 93,
+        "height": 2050,
+        "width": 960,
+        "price45": 185.01,
+        "price50": 191.39,
+        "namedWidth": 960,
+        "opening": "Левые",
+        "listedLength": 95
+      }
+    ]
+  },
+  {
+    "id": "door-95",
+    "model": "№118",
+    "detail": "Одностворчатая",
+    "kind": "steel",
+    "asset": "steel-single",
+    "variants": [
+      {
+        "row": 95,
+        "height": 2050,
+        "width": 960,
+        "price45": 185.01,
+        "price50": 191.39,
+        "namedWidth": 960,
+        "opening": "Правые",
+        "listedLength": 95
+      },
+      {
+        "row": 97,
+        "height": 2050,
+        "width": 960,
+        "price45": 185.01,
+        "price50": 191.39,
+        "namedWidth": 960,
+        "opening": "Левые",
+        "listedLength": 95
+      }
+    ]
+  },
+  {
+    "id": "door-99",
+    "model": "№118",
+    "detail": "Полуторная",
+    "kind": "steel",
+    "asset": "steel-fixed",
+    "variants": [
+      {
+        "row": 99,
+        "height": 2050,
+        "width": 1200,
+        "price45": 272.07,
+        "price50": 281.45,
+        "namedWidth": 1200,
+        "opening": "Правые",
+        "listedLength": 95
+      },
+      {
+        "row": 101,
+        "height": 2050,
+        "width": 1200,
+        "price45": 272.07,
+        "price50": 281.45,
+        "namedWidth": 1200,
+        "opening": "Левые",
+        "listedLength": 95
+      }
+    ]
+  },
+  {
+    "id": "door-103",
+    "model": "№119",
+    "detail": "Полуторная",
+    "kind": "steel",
+    "asset": "steel-fixed",
+    "variants": [
+      {
+        "row": 103,
+        "height": 2050,
+        "width": 1200,
+        "price45": 277.51,
+        "price50": 287.08,
+        "namedWidth": 1200,
+        "opening": "Правые",
+        "listedLength": 95
+      },
+      {
+        "row": 105,
+        "height": 2050,
+        "width": 1200,
+        "price45": 277.51,
+        "price50": 287.08,
+        "namedWidth": 1200,
+        "opening": "Левые",
+        "listedLength": 95
+      }
+    ]
+  },
+  {
+    "id": "door-107",
+    "model": "№127",
+    "detail": "Одностворчатая",
+    "kind": "steel",
+    "asset": "steel-single",
+    "variants": [
+      {
+        "row": 107,
+        "height": 2050,
+        "width": 860,
+        "price45": 185.01,
+        "price50": 191.39,
+        "namedWidth": 860,
+        "opening": "Правые",
+        "listedLength": 95
+      },
+      {
+        "row": 109,
+        "height": 2050,
+        "width": 860,
+        "price45": 185.01,
+        "price50": 191.39,
+        "namedWidth": 860,
+        "opening": "Левые",
+        "listedLength": 95
+      },
+      {
+        "row": 111,
+        "height": 2050,
+        "width": 960,
+        "price45": 185.01,
+        "price50": 191.39,
+        "namedWidth": 960,
+        "opening": "Левые",
+        "listedLength": 95
+      },
+      {
+        "row": 201,
+        "height": 2050,
+        "width": 960,
+        "price45": 185.01,
+        "price50": 191.39,
+        "namedWidth": 960,
+        "opening": "Правые",
+        "listedLength": 95
+      }
+    ]
+  },
+  {
+    "id": "door-113",
+    "model": "№157",
+    "detail": "Одностворчатая",
+    "kind": "steel",
+    "asset": "steel-single",
+    "variants": [
+      {
+        "row": 113,
+        "height": 2050,
+        "width": 860,
+        "price45": 185.01,
+        "price50": 191.39,
+        "namedWidth": 860,
+        "opening": "Правые",
+        "listedLength": 95
+      },
+      {
+        "row": 115,
+        "height": 2050,
+        "width": 860,
+        "price45": 185.01,
+        "price50": 191.39,
+        "namedWidth": 860,
+        "opening": "Левые",
+        "listedLength": 95
+      },
+      {
+        "row": 117,
+        "height": 2050,
+        "width": 960,
+        "price45": 185.01,
+        "price50": 191.39,
+        "namedWidth": 960,
+        "opening": "Левые",
+        "listedLength": 95
+      },
+      {
+        "row": 203,
+        "height": 2050,
+        "width": 960,
+        "price45": 185.01,
+        "price50": 191.39,
+        "namedWidth": 960,
+        "opening": "Правые",
+        "listedLength": 95
+      }
+    ]
+  },
+  {
+    "id": "door-119",
+    "model": "№157",
+    "detail": "Полуторная",
+    "kind": "steel",
+    "asset": "steel-fixed",
+    "variants": [
+      {
+        "row": 119,
+        "height": 2050,
+        "width": 1200,
+        "price45": 277.51,
+        "price50": 287.08,
+        "namedWidth": 1200,
+        "opening": "Правые",
+        "listedLength": 95
+      },
+      {
+        "row": 121,
+        "height": 2050,
+        "width": 1200,
+        "price45": 277.51,
+        "price50": 287.08,
+        "namedWidth": 1200,
+        "opening": "Левые",
+        "listedLength": 95
+      }
+    ]
+  },
+  {
+    "id": "door-123",
+    "model": "№16",
+    "detail": "Одностворчатая",
+    "kind": "steel",
+    "asset": "steel-single",
+    "variants": [
+      {
+        "row": 123,
+        "height": 2050,
+        "width": 960,
+        "price45": 185.01,
+        "price50": 191.39,
+        "namedWidth": 960,
+        "opening": "Правые",
+        "listedLength": 95
+      },
+      {
+        "row": 125,
+        "height": 2050,
+        "width": 960,
+        "price45": 185.01,
+        "price50": 191.39,
+        "namedWidth": 960,
+        "opening": "Левые",
+        "listedLength": 95
+      },
+      {
+        "row": 127,
+        "height": 2050,
+        "width": 860,
+        "price45": 185.01,
+        "price50": 191.39,
+        "namedWidth": 860,
+        "opening": "Левые",
+        "listedLength": 95
+      },
+      {
+        "row": 205,
+        "height": 2050,
+        "width": 860,
+        "price45": 185.01,
+        "price50": 191.39,
+        "namedWidth": 860,
+        "opening": "Правые",
+        "listedLength": 95
+      }
+    ]
+  },
+  {
+    "id": "door-129",
+    "model": "№197",
+    "detail": "Одностворчатая",
+    "kind": "steel",
+    "asset": "steel-single",
+    "variants": [
+      {
+        "row": 129,
+        "height": 2050,
+        "width": 860,
+        "price45": 185.01,
+        "price50": 191.39,
+        "namedWidth": 860,
+        "opening": "Правые",
+        "listedLength": 95
+      },
+      {
+        "row": 131,
+        "height": 2050,
+        "width": 860,
+        "price45": 185.01,
+        "price50": 191.39,
+        "namedWidth": 860,
+        "opening": "Левые",
+        "listedLength": 95
+      },
+      {
+        "row": 133,
+        "height": 2050,
+        "width": 960,
+        "price45": 185.01,
+        "price50": 191.39,
+        "namedWidth": 960,
+        "opening": "Левые",
+        "listedLength": 95
+      },
+      {
+        "row": 135,
+        "height": 2050,
+        "width": 960,
+        "price45": 185.01,
+        "price50": 191.39,
+        "namedWidth": 960,
+        "opening": "Правые",
+        "listedLength": 95
+      }
+    ]
+  },
+  {
+    "id": "door-137",
+    "model": "Y01",
+    "detail": "Одностворчатая",
+    "kind": "steel",
+    "asset": "steel-single",
+    "variants": [
+      {
+        "row": 137,
+        "height": 2050,
+        "width": 860,
+        "price45": 156.71,
+        "price50": 162.12,
+        "namedWidth": 860,
+        "opening": "Правые",
+        "listedLength": 70
+      },
+      {
+        "row": 139,
+        "height": 2050,
+        "width": 860,
+        "price45": 156.71,
+        "price50": 162.12,
+        "namedWidth": 860,
+        "opening": "Левые",
+        "listedLength": 70
+      }
+    ]
+  },
+  {
+    "id": "door-141",
+    "model": "Y02",
+    "detail": "Одностворчатая",
+    "kind": "steel",
+    "asset": "steel-single",
+    "variants": [
+      {
+        "row": 141,
+        "height": 2050,
+        "width": 860,
+        "price45": 156.71,
+        "price50": 162.12,
+        "namedWidth": 860,
+        "opening": "Правые",
+        "listedLength": 70
+      },
+      {
+        "row": 143,
+        "height": 2050,
+        "width": 860,
+        "price45": 156.71,
+        "price50": 162.12,
+        "namedWidth": 860,
+        "opening": "Левые",
+        "listedLength": 70
+      }
+    ]
+  },
+  {
+    "id": "door-145",
+    "model": "Y03",
+    "detail": "Одностворчатая",
+    "kind": "steel",
+    "asset": "steel-single",
+    "variants": [
+      {
+        "row": 145,
+        "height": 2050,
+        "width": 860,
+        "price45": 156.71,
+        "price50": 162.12,
+        "namedWidth": 860,
+        "opening": "Правые",
+        "listedLength": 70
+      },
+      {
+        "row": 147,
+        "height": 2050,
+        "width": 860,
+        "price45": 156.71,
+        "price50": 162.12,
+        "namedWidth": 860,
+        "opening": "Левые",
+        "listedLength": 70
+      }
+    ]
+  },
+  {
+    "id": "door-149",
+    "model": "Y04",
+    "detail": "Одностворчатая",
+    "kind": "steel",
+    "asset": "steel-single",
+    "variants": [
+      {
+        "row": 149,
+        "height": 2050,
+        "width": 860,
+        "price45": 156.71,
+        "price50": 162.12,
+        "namedWidth": 860,
+        "opening": "Правые",
+        "listedLength": 70
+      },
+      {
+        "row": 151,
+        "height": 2050,
+        "width": 860,
+        "price45": 156.71,
+        "price50": 162.12,
+        "namedWidth": 860,
+        "opening": "Левые",
+        "listedLength": 70
+      }
+    ]
+  },
+  {
+    "id": "door-153",
+    "model": "Y06",
+    "detail": "Одностворчатая",
+    "kind": "steel",
+    "asset": "steel-single",
+    "variants": [
+      {
+        "row": 153,
+        "height": 2050,
+        "width": 860,
+        "price45": 156.71,
+        "price50": 162.12,
+        "namedWidth": 860,
+        "opening": "Правые",
+        "listedLength": 70
+      },
+      {
+        "row": 155,
+        "height": 2050,
+        "width": 860,
+        "price45": 156.71,
+        "price50": 162.12,
+        "namedWidth": 860,
+        "opening": "Левые",
+        "listedLength": 70
+      }
+    ]
+  },
+  {
+    "id": "door-157",
+    "model": "Y06",
+    "detail": "Полуторная (в тон)",
+    "kind": "steel",
+    "asset": "steel-matching",
+    "variants": [
+      {
+        "row": 157,
+        "height": 2050,
+        "width": 1200,
+        "price45": 239.42,
+        "price50": 247.68,
+        "namedWidth": 1200,
+        "opening": "Правые",
+        "listedLength": 70
+      },
+      {
+        "row": 159,
+        "height": 2050,
+        "width": 1200,
+        "price45": 239.42,
+        "price50": 247.68,
+        "namedWidth": 1200,
+        "opening": "Левые",
+        "listedLength": 70
+      }
+    ]
+  },
+  {
+    "id": "door-161",
+    "model": "Y07",
+    "detail": "Одностворчатая",
+    "kind": "steel",
+    "asset": "steel-single",
+    "variants": [
+      {
+        "row": 161,
+        "height": 2050,
+        "width": 860,
+        "price45": 156.71,
+        "price50": 162.12,
+        "namedWidth": 860,
+        "opening": "Правые",
+        "listedLength": 70
+      },
+      {
+        "row": 163,
+        "height": 2050,
+        "width": 860,
+        "price45": 156.71,
+        "price50": 162.12,
+        "namedWidth": 860,
+        "opening": "Левые",
+        "listedLength": 70
+      }
+    ]
+  },
+  {
+    "id": "door-165",
+    "model": "Y08",
+    "detail": "Одностворчатая",
+    "kind": "steel",
+    "asset": "steel-single",
+    "variants": [
+      {
+        "row": 165,
+        "height": 2050,
+        "width": 860,
+        "price45": 156.71,
+        "price50": 162.12,
+        "namedWidth": 860,
+        "opening": "Правые",
+        "listedLength": 70
+      },
+      {
+        "row": 167,
+        "height": 2050,
+        "width": 860,
+        "price45": 156.71,
+        "price50": 162.12,
+        "namedWidth": 860,
+        "opening": "Левые",
+        "listedLength": 70
+      }
+    ]
+  },
+  {
+    "id": "door-169",
+    "model": "Y09",
+    "detail": "Одностворчатая",
+    "kind": "steel",
+    "asset": "steel-single",
+    "variants": [
+      {
+        "row": 169,
+        "height": 2050,
+        "width": 860,
+        "price45": 156.71,
+        "price50": 162.12,
+        "namedWidth": 860,
+        "opening": "Правые",
+        "listedLength": 70
+      },
+      {
+        "row": 171,
+        "height": 2050,
+        "width": 860,
+        "price45": 156.71,
+        "price50": 162.12,
+        "namedWidth": 860,
+        "opening": "Левые",
+        "listedLength": 70
+      }
+    ]
+  },
+  {
+    "id": "door-173",
+    "model": "Y10",
+    "detail": "Полуторная (в тон)",
+    "kind": "steel",
+    "asset": "steel-matching",
+    "variants": [
+      {
+        "row": 173,
+        "height": 2050,
+        "width": 1200,
+        "price45": 239.42,
+        "price50": 247.68,
+        "namedWidth": 1200,
+        "opening": "Левые",
+        "listedLength": 70
+      },
+      {
+        "row": 175,
+        "height": 2050,
+        "width": 860,
+        "price45": 239.42,
+        "price50": 247.68,
+        "namedWidth": 1200,
+        "opening": "Правые",
+        "listedLength": 70
+      }
+    ]
+  },
+  {
+    "id": "door-177",
+    "model": "Y10",
+    "detail": "Одностворчатая",
+    "kind": "steel",
+    "asset": "steel-single",
+    "variants": [
+      {
+        "row": 177,
+        "height": 2050,
+        "width": 860,
+        "price45": 156.71,
+        "price50": 162.12,
+        "namedWidth": 860,
+        "opening": "Правые",
+        "listedLength": 70
+      },
+      {
+        "row": 179,
+        "height": 2050,
+        "width": 860,
+        "price45": 156.71,
+        "price50": 162.12,
+        "namedWidth": 860,
+        "opening": "Левые",
+        "listedLength": 70
+      }
+    ]
+  },
+  {
+    "id": "door-181",
+    "model": "Y12",
+    "detail": "Одностворчатая",
+    "kind": "steel",
+    "asset": "steel-single",
+    "variants": [
+      {
+        "row": 181,
+        "height": 2050,
+        "width": 860,
+        "price45": 156.71,
+        "price50": 162.12,
+        "namedWidth": 860,
+        "opening": "Левые",
+        "listedLength": 70
+      },
+      {
+        "row": 199,
+        "height": 2050,
+        "width": 860,
+        "price45": 156.71,
+        "price50": 162.12,
+        "namedWidth": 860,
+        "opening": "Правые",
+        "listedLength": 70
+      }
+    ]
+  },
+  {
+    "id": "door-183",
+    "model": "Y13",
+    "detail": "Одностворчатая",
+    "kind": "steel",
+    "asset": "steel-single",
+    "variants": [
+      {
+        "row": 183,
+        "height": 2050,
+        "width": 860,
+        "price45": 156.71,
+        "price50": 162.12,
+        "namedWidth": 860,
+        "opening": "Правые",
+        "listedLength": 70
+      },
+      {
+        "row": 185,
+        "height": 2050,
+        "width": 860,
+        "price45": 156.71,
+        "price50": 162.12,
+        "namedWidth": 860,
+        "opening": "Левые",
+        "listedLength": 70
+      }
+    ]
+  },
+  {
+    "id": "door-187",
+    "model": "Y13",
+    "detail": "Полуторная (глухая)",
+    "kind": "steel",
+    "asset": "steel-fixed",
+    "variants": [
+      {
+        "row": 187,
+        "height": 2050,
+        "width": 960,
+        "price45": 195.89,
+        "price50": 202.64,
+        "namedWidth": 1200,
+        "opening": "Правые",
+        "listedLength": 70
+      },
+      {
+        "row": 189,
+        "height": 2050,
+        "width": 1200,
+        "price45": 195.89,
+        "price50": 202.64,
+        "namedWidth": 1200,
+        "opening": "Левые",
+        "listedLength": 70
+      }
+    ]
+  },
+  {
+    "id": "door-191",
+    "model": "Y14",
+    "detail": "Полуторная (глухая)",
+    "kind": "steel",
+    "asset": "steel-fixed",
+    "variants": [
+      {
+        "row": 191,
+        "height": 2050,
+        "width": 1200,
+        "price45": 217.66,
+        "price50": 225.16,
+        "namedWidth": 1200,
+        "opening": "Левые",
+        "listedLength": 70
+      },
+      {
+        "row": 193,
+        "height": 2050,
+        "width": 1200,
+        "price45": 217.66,
+        "price50": 225.16,
+        "namedWidth": 1200,
+        "opening": "Правые",
+        "listedLength": 70
+      }
+    ]
+  },
+  {
+    "id": "door-195",
+    "model": "Y11",
+    "detail": "Одностворчатая",
+    "kind": "steel",
+    "asset": "steel-single",
+    "variants": [
+      {
+        "row": 195,
+        "height": 2050,
+        "width": 860,
+        "price45": 156.71,
+        "price50": 162.12,
+        "namedWidth": 860,
+        "opening": "Правые",
+        "listedLength": 70
+      },
+      {
+        "row": 197,
+        "height": 2050,
+        "width": 860,
+        "price45": 156.71,
+        "price50": 162.12,
+        "namedWidth": 860,
+        "opening": "Левые",
+        "listedLength": 70
+      }
+    ]
+  }
+]

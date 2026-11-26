@@ -296,7 +296,7 @@ export function Storefront() {
                   "Подберите межкомнатные и входные двери, ручки и комплектующие для вашего интерьера.",
                 )}
               </p>
-              <a className="shop-button" href="#catalog">
+              <a className="shop-button" href="/doors">
                 {t("Смотреть каталог")}
               </a>
             </div>
@@ -469,7 +469,7 @@ export function Storefront() {
       <footer className="shop-footer">
         <div className="shop-wrap">
           <Brand />
-          <a href="#catalog">{t("Каталог")}</a>
+          <a href="/doors">{t("Каталог из прайс-листа")}</a>
           <a href="#services">{t("Доставка и установка")}</a>
           <address className="shop-contact">
             <strong>
